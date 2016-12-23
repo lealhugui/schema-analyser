@@ -9,3 +9,4 @@ singledispatch==3.4.0.3
 six==1.10.0
 typing==3.5.2.2
 whitenoise==3.2.2
+django-filter==1.0.1
