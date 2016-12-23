@@ -90,3 +90,6 @@ ENV/
 
 #dev DB
 dev.sqlite3
+
+#collected static
+srv_engine/staticfiles/*
