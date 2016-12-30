@@ -1,4 +1,4 @@
-from django.db import models
+from django.db.models import Model as DjangoModel
 # These imports are made here for the sake of simplicity for the developer.
 # This way, the developer can import only this namespace and expect to have
 # both the custom model and the base django fields
@@ -15,7 +15,7 @@ from graphene_django.filter import DjangoFilterConnectionField
 from graphql_relay.node.node import from_global_id
 
 
-class Model(models.Model):
+class GQLModel(DjangoModel):
     """Base Model"""
 
     class _GQL:

@@ -1,7 +1,6 @@
-
 from srv_engine import models
 
-class Person(models.Model):
+class Person(models.GQLModel):
     first_name = models.CharField(max_length=120)
     last_name = models.CharField(max_length=120)
 
