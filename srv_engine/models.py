@@ -1,4 +1,13 @@
 from django.db import models
+# These imports are made here for the sake of simplicity for the developer.
+# This way, the developer can import only this namespace and expect to have
+# both the custom model and the base django fields
+from django.db.models.fields import *
+from django.db.models.fields.files import FileField, ImageField
+from django.db.models.fields.related import (
+    ForeignKey, ForeignObject, OneToOneField, ManyToManyField,
+    ManyToOneRel, ManyToManyRel, OneToOneRel,
+)
 import graphene
 from graphene import relay, AbstractType
 from graphene_django import DjangoObjectType
@@ -7,10 +16,11 @@ from graphql_relay.node.node import from_global_id
 
 
 class Model(models.Model):
-    """Base Model
-    """
+    """Base Model"""
 
     class _GQL:
+        """GraphQL objects"""
+
         node = None
         query = None
         mutation = None
@@ -20,18 +30,16 @@ class Model(models.Model):
 
     @classmethod
     def build_grapth_attr(cls):
+        """Consolidate the GraphQL objects defined by the Developer. 
+        If no object was defined in the class declaration, then one is
+        created here"""
+
         c_name = cls.__name__
         
-        has_node = False
-        has_query = False
-        has_mutation = False
-        if cls._GQL != None:
-            if cls._GQL.node != None:
-                has_node = True
-            if cls._GQL.query != None:
-                has_query = True
-            if cls._GQL.mutation != None:
-                has_mutation = True
+        has_node = cls._GQL != None and cls._GQL.node != None
+        has_query = cls._GQL != None and cls._GQL.query != None
+        has_mutation = cls._GQL != None and cls._GQL.mutation != None
+        
         if has_node:
             node = cls._GQL.node
         else:
@@ -44,6 +52,7 @@ class Model(models.Model):
             
             node_attrs = {"Meta": Meta}
             node = type(node_name, (DjangoObjectType, ), node_attrs)
+
         if has_query:
             query = cls._GQL.query
         else:                
@@ -71,9 +80,6 @@ class Model(models.Model):
             inner_mutation = type("Introduce{c}".format(c=c_name),
                 (relay.ClientIDMutation,), 
                 m_attrs)
-
-            
-
             inner_mutation.mutate_and_get_payload = mutate_and_get_payload
         
             mutation = type("Mutation{c}".format(c=c_name),
@@ -86,8 +92,7 @@ class Model(models.Model):
         cls._GQL.mutation = mutation
 
         return cls._GQL
-
-
+        
 
 def mutate_and_get_payload(cls, input, context, info):
     result_ok=False
