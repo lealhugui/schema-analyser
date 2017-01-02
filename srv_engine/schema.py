@@ -1,14 +1,27 @@
+"""Main GQL schema. It is built dynamically from the
+iteration on the models cache."""
+
+from django.apps import apps
 import graphene
 
-import srv_engine.main.schema as main_schema
+from .models import GQLModel
 
+GQL_MODELS = [m for m in apps.get_models() if issubclass(m, GQLModel)]
 
-class Query(main_schema.Query, graphene.ObjectType):
-    # This class will inherit from multiple Queries
-    # as we begin to add more apps to our project
-    pass
+for m in GQL_MODELS:
+    m.build_grapth_attr()
 
-class Mutation(main_schema.MutationPerson, graphene.ObjectType):
-    pass
+GQL_QUERIES = list()
+GQL_MUTATIONS = list()
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+for m in GQL_MODELS:
+    GQL_QUERIES.append(m._GQL.query)
+    GQL_MUTATIONS.append(m._GQL.mutation)
+
+GQL_QUERIES.append(graphene.ObjectType)
+GQL_MUTATIONS.append(graphene.ObjectType)
+
+Query = type("Query", tuple(GQL_QUERIES), dict())
+Mutation = type("Mutation", tuple(GQL_MUTATIONS), dict())
+
+SCHEMA = graphene.Schema(query=Query, mutation=Mutation)

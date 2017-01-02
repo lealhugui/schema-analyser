@@ -126,5 +126,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'srv_engine', 'staticfiles')
 
 
 GRAPHENE = {
-    'SCHEMA': 'srv_engine.schema.schema'
+    'SCHEMA': 'srv_engine.schema.SCHEMA'
 }

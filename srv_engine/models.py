@@ -30,16 +30,16 @@ class GQLModel(DjangoModel):
 
     @classmethod
     def build_grapth_attr(cls):
-        """Consolidate the GraphQL objects defined by the Developer. 
-        If no object was defined in the class declaration, then one is
+        """Consolidate the GraphQL objects defined by the Developer.
+        If no object was defined in the class declaration, a generic one is
         created here"""
 
         c_name = cls.__name__
-        
+
         has_node = cls._GQL != None and cls._GQL.node != None
         has_query = cls._GQL != None and cls._GQL.query != None
         has_mutation = cls._GQL != None and cls._GQL.mutation != None
-        
+
         if has_node:
             node = cls._GQL.node
         else:
@@ -49,20 +49,20 @@ class GQLModel(DjangoModel):
             class Meta:
                 model = cls
                 interfaces = (relay.Node, )
-            
+
             node_attrs = {"Meta": Meta}
             node = type(node_name, (DjangoObjectType, ), node_attrs)
 
         if has_query:
             query = cls._GQL.query
-        else:                
+        else:
             # Query definition
             q_attrs = {c_name: DjangoFilterConnectionField(node)}
             query = type("Query", (AbstractType,), q_attrs)
-        
+
         if has_mutation:
             mutation = cls._GQL.mutation
-        else:                
+        else:
             # Mutation definition
             m_fld = dict()
             for f in node._meta.fields:
@@ -75,42 +75,42 @@ class GQLModel(DjangoModel):
             m_attrs["Input"] = mutation_input
             m_attrs["OK"] = graphene.Boolean()
             m_attrs["Opt"] = mutation_opt
+            m_attrs[cls.__name__.lower()] = graphene.Field(node)
             m_attrs["mutate_and_get_payload"] = classmethod(mutate_and_get_payload)
 
             inner_mutation = type("Introduce{c}".format(c=c_name),
-                (relay.ClientIDMutation,), 
-                m_attrs)
-            inner_mutation.mutate_and_get_payload = mutate_and_get_payload
-        
+                                  (relay.ClientIDMutation,),
+                                  m_attrs)
+
             mutation = type("Mutation{c}".format(c=c_name),
-                (AbstractType,),
-                {inner_mutation.__name__.lower(): inner_mutation.Field()}
-            )
-        
+                            (AbstractType,),
+                            {inner_mutation.__name__: inner_mutation.Field()})
+
         cls._GQL.node = node
         cls._GQL.query = query
         cls._GQL.mutation = mutation
 
         return cls._GQL
-        
+
 
 def mutate_and_get_payload(cls, input, context, info):
-    result_ok=False
-    if input.get("id")==None or input.get("id")=="":
+    result_ok = False
+    if input.get("id") is None or input.get("id") == "":
         # Create....
+        gid = input.pop("id")
         result = cls.Opt.model.objects.create(**input)
-        result_ok=True
+        result_ok = True
     else:
         # Update
         gid = input.pop("id")
-        r_id= from_global_id(input.get("id"))[1]
+        r_id = from_global_id(gid)[1]
 
-        o.Opt.model.objects.filter(pk=r_id).update(**input)
-        result = o.Opt.model.objects.get(pk=r_id)
-        result_ok=True
+        cls.Opt.model.objects.filter(pk=r_id).update(**input)
+        result = cls.Opt.model.objects.get(pk=r_id)
+        result_ok = True
 
     result_set = {
         cls.Opt.model.__name__.lower(): result,
-        ok: result_ok
+        "OK": result_ok
     }
     return cls(**result_set)
