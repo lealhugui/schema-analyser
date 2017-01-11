@@ -6,10 +6,13 @@ const autoprefixer = require('autoprefixer');
 const precss = require('precss');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const BundleTracker = require('webpack-bundle-tracker');
 
 let appEntry;
 let devtool;
 let plugins;
+
+const tracker = new BundleTracker({filename: './webpack-stats.json'});
 
 const htmlTemplate = new HtmlWebpackPlugin({
   title: 'Relay Starter Kit - Integrated with Relay, GraphQL, Express, ES6/ES7, JSX, Webpack, Babel, Material Design Lite, and PostCSS',
@@ -38,7 +41,8 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     htmlTemplate,
-    favIcon
+    favIcon,
+    tracker
   ];
 } else {
   appEntry = [
@@ -55,7 +59,8 @@ if (process.env.NODE_ENV === 'production') {
       __DEV__: true
     }),
     htmlTemplate,
-    favIcon
+    favIcon,
+    tracker
   ];
 }
 
@@ -65,7 +70,7 @@ module.exports = {
     vendor: ['react', 'react-dom', 'react-mdl', 'react-relay', 'react-router', 'react-router-relay']
   },
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'build', 'public'),
     publicPath: '/',
     filename: '[name].js'
   },

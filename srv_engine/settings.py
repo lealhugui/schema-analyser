@@ -39,12 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'graphene_django',
+    'webpack_loader',
     'srv_engine.main',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'srv_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'build', 'public')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,9 +124,23 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'srv_engine', 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'frontend', 'build', 'public'),
+)
 
 
 GRAPHENE = {
     'SCHEMA': 'srv_engine.schema.SCHEMA',
     'SCHEMA_OUTPUT': 'frontend/schema.json'
+}
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'public/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
+    }
 }
