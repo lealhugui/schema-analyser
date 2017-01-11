@@ -3,8 +3,13 @@ GraphSQL and Django Server
 
 # Install
 ```
-$ git clone
+$ git clone ...srv-engine
+$ cd srv-engine
 $ pip install -r requirements.txt
+$ cd frontend
+$ npm install
+$ npm run deploy
+$ cd ..
 $ python manage.py migrate
 $ python manage.py runserver
 ```
