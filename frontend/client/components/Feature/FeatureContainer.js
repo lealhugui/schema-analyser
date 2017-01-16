@@ -4,18 +4,11 @@ import Feature from './FeatureComponent';
 export default Relay.createContainer(Feature, {
   fragments: {
     viewer: () => Relay.QL`
-      fragment on User {
-        id,
-        features(first: 20) {
-          edges {
-            node {
-              id
-              name
-              description
-              url
-            }
-          }
-        }
+      fragment on Feature {        
+        id
+        name
+        description
+        url          
       }`
   }
 });

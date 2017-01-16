@@ -59,7 +59,10 @@ ROOT_URLCONF = 'srv_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend', 'build', 'public')],
+        'DIRS': [            
+            os.path.join(BASE_DIR, 'srv_engine', 'staticfiles'),
+            os.path.join(BASE_DIR, 'frontend', 'build', 'public')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

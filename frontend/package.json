@@ -4,9 +4,10 @@
   "description": "Relay Starter Kit - Integrated with Relay, GraphQL, Express, ES6/ES7, JSX, Webpack, Babel, Material Design Lite, and PostCSS",
   "scripts": {
     "deploy": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.config.js ",
+    "dev-build": "npm run clean && cross-env NODE_ENV=dev webpack --config webpack.config.js ",
     "lint": "eslint --ignore-path .gitignore client server",
     "heroku-postbuild": "cross-env NODE_ENV=production webpack --config webpack.config.js && cross-env NODE_ENV=production ./node_modules/.bin/babel ./server --out-dir ./lib",
-    "clean": "del /f /s build && mkdir build"
+    "clean": "mkdir build"
   },
   "pre-commit": "lint",
   "repository": {
