@@ -93,3 +93,13 @@ dev.sqlite3
 
 #collected static
 srv_engine/staticfiles/*
+
+
+
+# IntelliJ Files
+*.iml
+*.ipr
+*.iws
+/out/
+.idea/
+.idea_modules/
