@@ -9,7 +9,7 @@ from .models import GQLModel
 GQL_MODELS = [m for m in apps.get_models() if issubclass(m, GQLModel)]
 
 for m in GQL_MODELS:
-    m.build_grapth_attr()
+    m.build_graph_attr()
 
 GQL_QUERIES = list()
 GQL_MUTATIONS = list()

@@ -29,7 +29,7 @@ class GQLModel(DjangoModel):
         abstract = True
 
     @classmethod
-    def build_grapth_attr(cls):
+    def build_graph_attr(cls):
         """Consolidate the GraphQL objects defined by the Developer.
         If no object was defined in the class declaration, a generic one is
         created here"""
