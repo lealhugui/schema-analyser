@@ -20,6 +20,7 @@ class GQLModel(DjangoModel):
 
     Beyond every Django's Model attribute, this class can have an inner class called "_GQL", wich in turn can have
       the following attributes:
+      query_name: the query name that will be transpiled in the root node
       node: a Graphene's "DjangoObjectType" class for the GraphQL node configuration
       query: a Graphene's "AbstractType" class for GraphQL query configuration
       mutation: a Graphene's "AbstractType" class for GraphQL base mutation configuration
@@ -36,21 +37,21 @@ class GQLModel(DjangoModel):
         """
         # TODO: give 'Query' and 'Mutation' the option to be an iterable.
 
-        c_name = cls.__name__
-        has_node = hasattr(cls, "_GQL") and cls._GQL.node is not None
-        has_query = hasattr(cls, "_GQL") and cls._GQL.query is not None
-        has_mutation = hasattr(cls, "_GQL") and cls._GQL.mutation is not None
-
         if not hasattr(cls, "_GQL"):
             b = tuple()
             attrs = dict()
             cls._GQL = type("_GQL", b, attrs)
 
+        c_name = cls.__name__
+        has_node = hasattr(cls._GQL, "node") and cls._GQL.node is  not None
+        has_query = hasattr(cls._GQL, "query ") and cls._GQL.query is not None
+        has_mutation = hasattr(cls._GQL, "mutation ") and cls._GQL.mutation is not None
+
         if has_node:
             node = cls._GQL.node
         else:
             # Node defnition
-            node_name = "{c}Node".format(c=c_name)
+            node_name = c_name
 
             class Meta:
                 model = cls
@@ -63,8 +64,14 @@ class GQLModel(DjangoModel):
             query = cls._GQL.query
         else:
             # Query definition
+            q_name = None
+            if hasattr(cls._GQL, "query_name"):
+                q_name = cls._GQL.query_name
+                print(q_name)
+            else:
+                q_name = "{}Query".format(c_name)
             q_attrs = {c_name: DjangoFilterConnectionField(node)}
-            query = type("{}Query".format(c_name), (AbstractType,), q_attrs)
+            query = type(q_name, (AbstractType,), q_attrs)
         if has_mutation:
             mutation = cls._GQL.mutation
         else:
@@ -94,6 +101,7 @@ class GQLModel(DjangoModel):
 
         cls._GQL.node = node
         cls._GQL.query = query
+        print(query)
         cls._GQL.mutation = mutation
 
         return cls._GQL

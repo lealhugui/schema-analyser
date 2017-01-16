@@ -4,7 +4,7 @@ class AddFeatureMutation extends Relay.Mutation {
 
   getMutation() {
     return Relay.QL`
-      mutation { addFeature }
+      mutation { IntroduceFeaturePayload }
     `;
   }
 
@@ -18,9 +18,9 @@ class AddFeatureMutation extends Relay.Mutation {
 
   getFatQuery() {
     return Relay.QL`
-      fragment on AddFeaturePayload {
-        featureEdge,
-        viewer { features }
+      fragment on IntroduceFeaturePayload {
+        feature
+        
       }
     `;
   }

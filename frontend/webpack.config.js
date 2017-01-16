@@ -13,13 +13,6 @@ let devtool;
 let plugins;
 
 const tracker = new BundleTracker({filename: './webpack-stats.json'});
-
-const htmlTemplate = new HtmlWebpackPlugin({
-  title: 'Relay Starter Kit - Integrated with Relay, GraphQL, Express, ES6/ES7, JSX, Webpack, Babel, Material Design Lite, and PostCSS',
-  template: './client/index.html',
-  mobile: true,
-  inject: false
-});
 const favIcon = new FaviconsWebpackPlugin('./client/assets/logo.png');
 
 if (process.env.NODE_ENV === 'production') {
@@ -40,7 +33,6 @@ if (process.env.NODE_ENV === 'production') {
         screw_ie8: true
       }
     }),
-    htmlTemplate,
     favIcon,
     tracker
   ];
@@ -58,7 +50,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       __DEV__: true
     }),
-    htmlTemplate,
     favIcon,
     tracker
   ];
