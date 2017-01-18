@@ -39,13 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'graphene_django',
-    'webpack_loader',
     'srv_engine.main',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,9 +58,8 @@ ROOT_URLCONF = 'srv_engine.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [            
-            os.path.join(BASE_DIR, 'srv_engine', 'staticfiles'),
-            os.path.join(BASE_DIR, 'frontend', 'build', 'public')
+        'DIRS': [
+            os.path.join(BASE_DIR, 'srv_engine', 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -126,8 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'srv_engine', 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'srv_engine', 'static'),
     os.path.join(BASE_DIR, 'frontend', 'build', 'public'),
 )
 
@@ -135,15 +134,4 @@ STATICFILES_DIRS = (
 GRAPHENE = {
     'SCHEMA': 'srv_engine.schema.SCHEMA',
     'SCHEMA_OUTPUT': 'frontend/schema.json'
-}
-
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'public/', # must end with slash
-        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
-        'POLL_INTERVAL': 0.1,
-        'TIMEOUT': None,
-        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
-    }
 }

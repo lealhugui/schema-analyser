@@ -93,6 +93,7 @@ dev.sqlite3
 
 #collected static
 srv_engine/staticfiles/*
+staticfiles/*
 
 
 
