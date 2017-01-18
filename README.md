@@ -20,4 +20,4 @@ Still on alpha (frontend been built). Beta comming this Jan/2017
 
 # Some notes....
 
-The frontend initial setup uses the amazing [relay-fullstack](https://github.com/lvarayut/relay-fullstack) and [django-webpack-loader](https://github.com/owais/django-webpack-loader).
+The frontend initial setup uses the amazing [relay-fullstack](https://github.com/lvarayut/relay-fullstack).

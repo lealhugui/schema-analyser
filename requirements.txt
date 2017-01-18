@@ -10,4 +10,3 @@ six==1.10.0
 typing==3.5.2.2
 whitenoise==3.2.2
 django-filter==1.0.1
-django-webpack-loader==0.4.1
