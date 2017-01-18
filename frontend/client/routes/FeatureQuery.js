@@ -3,15 +3,14 @@ import Relay from 'react-relay';
 export default {
   viewer: Component => Relay.QL`
     query {
-      User{
+      Feature {
         edges{
           node{
-            ${Component.getFragment('viewer')}
+            ${Component.getFragment('viewer')}        
           }
         }
-        
+            
       }
-        
     }
   `
 };

@@ -43,7 +43,7 @@ class GQLModel(DjangoModel):
             cls._GQL = type("_GQL", b, attrs)
 
         c_name = cls.__name__
-        has_node = hasattr(cls._GQL, "node") and cls._GQL.node is  not None
+        has_node = hasattr(cls._GQL, "node") and cls._GQL.node is not None
         has_query = hasattr(cls._GQL, "query ") and cls._GQL.query is not None
         has_mutation = hasattr(cls._GQL, "mutation ") and cls._GQL.mutation is not None
 
@@ -70,7 +70,9 @@ class GQLModel(DjangoModel):
                 print(q_name)
             else:
                 q_name = "{}Query".format(c_name)
-            q_attrs = {c_name: DjangoFilterConnectionField(node)}
+            q_attrs = dict()
+            q_attrs[c_name] = DjangoFilterConnectionField(node)
+            # q_attrs = {c_name: relay.Node.Field(node)}
             query = type(q_name, (AbstractType,), q_attrs)
         if has_mutation:
             mutation = cls._GQL.mutation
@@ -97,7 +99,6 @@ class GQLModel(DjangoModel):
             mutation = type("Mutation{c}".format(c=c_name),
                             (AbstractType,),
                             {inner_mutation.__name__: inner_mutation.Field()})
-
 
         cls._GQL.node = node
         cls._GQL.query = query
