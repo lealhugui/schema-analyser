@@ -9,7 +9,7 @@ from django.db.models.fields.related import (
     ManyToOneRel, ManyToManyRel, OneToOneRel,
 )
 import graphene
-from graphene import relay, AbstractType
+from graphene import relay, AbstractType, resolve_only_args
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_relay.node.node import from_global_id
@@ -24,6 +24,7 @@ class GQLModel(DjangoModel):
       node: a Graphene's "DjangoObjectType" class for the GraphQL node configuration
       query: a Graphene's "AbstractType" class for GraphQL query configuration
       mutation: a Graphene's "AbstractType" class for GraphQL base mutation configuration
+      resolve: a query for getting all
     """
 
     class Meta:
@@ -46,6 +47,7 @@ class GQLModel(DjangoModel):
         has_node = hasattr(cls._GQL, "node") and cls._GQL.node is not None
         has_query = hasattr(cls._GQL, "query ") and cls._GQL.query is not None
         has_mutation = hasattr(cls._GQL, "mutation ") and cls._GQL.mutation is not None
+        has_resolve = hasattr(cls._GQL, "resolve ") and cls._GQL.resolve is not None
 
         if has_node:
             node = cls._GQL.node
@@ -58,22 +60,25 @@ class GQLModel(DjangoModel):
                 interfaces = (relay.Node, )
 
             node_attrs = {"Meta": Meta}
+            node_attrs["get_node"] = classmethod(get_node)
             node = type(node_name, (DjangoObjectType, ), node_attrs)
+        
+        if has_resolve:
+            resolve = cls._GQL.resolve
+        else:
+            resolve = {
+                "name": "resolve_{}s".format(c_name.lower()),
+                "method": resolve_only_args(resolve_all)
+            }
 
         if has_query:
             query = cls._GQL.query
         else:
-            # Query definition
-            q_name = None
-            if hasattr(cls._GQL, "query_name"):
-                q_name = cls._GQL.query_name
-                print(q_name)
-            else:
-                q_name = "{}Query".format(c_name)
-            
+            q_name = "{}Query".format(c_name)
+
             q_attrs = {c_name: graphene.Field(node)}
             q_attrs["all{}".format(c_name)] = DjangoFilterConnectionField(node)
-            
+
             query = type(q_name, (AbstractType,), q_attrs)
         if has_mutation:
             mutation = cls._GQL.mutation
@@ -103,8 +108,8 @@ class GQLModel(DjangoModel):
 
         cls._GQL.node = node
         cls._GQL.query = query
-        print(query)
         cls._GQL.mutation = mutation
+        cls._GQL.resolve = resolve
 
         return cls._GQL
 
@@ -130,3 +135,10 @@ def mutate_and_get_payload(cls, input, context, info):
         "OK": result_ok
     }
     return cls(**result_set)
+
+def get_node(cls, id, context, info):
+    return cls.objects.get(id)
+
+def resolve_all(self):
+    raise Exception(self.__class__)
+    return self.__class__.objects.all()
