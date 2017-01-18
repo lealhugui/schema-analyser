@@ -17,23 +17,16 @@ GQL_MUTATIONS = list()
 GQL_NODES = dict()
 
 for m in GQL_MODELS:
-    GQL_NODES[m.__name__] = DjangoFilterConnectionField(m._GQL.node)
+    GQL_NODES[m.__name__] = graphene.Field(m._GQL.node)
+    GQL_MUTATIONS.append(m._GQL.mutation)    
 
-gql_root_query = type("Node", (graphene.AbstractType, ), GQL_NODES)
-node_attrs = { "node": gql_root_query }
-node_query = type("NodeQuey", (graphene.AbstractType,), node_attrs)
-GQL_QUERIES.append(node_query)
 
-# GQL_QUERIES.append(gql_root_query)
+GQL_NODES["node"] = graphene.relay.Node.Field()
+# node_query = type("NodeQuey", (graphene.AbstractType,), GQL_NODES)
 
-for m in GQL_MODELS:
-    GQL_QUERIES.append(m._GQL.query)
-    GQL_MUTATIONS.append(m._GQL.mutation)
-
-GQL_QUERIES.append(graphene.ObjectType)
 GQL_MUTATIONS.append(graphene.ObjectType)
 
-Query = type("Query", tuple(GQL_QUERIES), dict())
+Query = type("Query", (graphene.ObjectType, ), GQL_NODES)
 Mutation = type("Mutation", tuple(GQL_MUTATIONS), dict())
 
 SCHEMA = graphene.Schema(query=Query, mutation=Mutation)

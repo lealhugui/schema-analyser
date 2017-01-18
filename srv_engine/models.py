@@ -70,9 +70,10 @@ class GQLModel(DjangoModel):
                 print(q_name)
             else:
                 q_name = "{}Query".format(c_name)
-            q_attrs = dict()
-            q_attrs[c_name] = DjangoFilterConnectionField(node)
-            # q_attrs = {c_name: relay.Node.Field(node)}
+            
+            q_attrs = {c_name: graphene.Field(node)}
+            q_attrs["all{}".format(c_name)] = DjangoFilterConnectionField(node)
+            
             query = type(q_name, (AbstractType,), q_attrs)
         if has_mutation:
             mutation = cls._GQL.mutation
