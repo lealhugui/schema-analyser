@@ -1,7 +1,7 @@
 {
-  "name": "relay-fullstack",
+  "name": "graph-app",
   "version": "1.0.0",
-  "description": "Relay Starter Kit - Integrated with Relay, GraphQL, Express, ES6/ES7, JSX, Webpack, Babel, Material Design Lite, and PostCSS",
+  "description": "GraphQL (Relay) base app, with some data modeling sugar on top.",
   "scripts": {
     "start": "nodemon --watch server/data/**/*.js --exec \"npm run update && babel-node server/index.js\"",
     "update": "babel-node server/utils/updateSchema.js",
@@ -14,7 +14,7 @@
   "pre-commit": "lint",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lvarayut/relay-fullstack.git"
+    "url": "git+https://github.com/lealhugui/graph-app.git"
   },
   "engines": {
     "node": "6.6.0",
@@ -35,12 +35,12 @@
     "scaffolding",
     "fullstack"
   ],
-  "author": "Varayut Lerdkanlayanawat",
+  "author": "Guilherme Leal",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lvarayut/relay-fullstack/issues"
+    "url": "https://github.com/lealhugui/graph-app/issues"
   },
-  "homepage": "https://github.com/lvarayut/relay-fullstack",
+  "homepage": "https://lealhugui.github.io/graph-app/",
   "devDependencies": {
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
