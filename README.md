@@ -1,23 +1,17 @@
-# srv-engine
-GraphSQL and Django Server
+# graph-app
+GraphQL ([Relay](https://facebook.github.io/relay/)) base app, with some data modeling sugar on top.
 
-# Install
+# Install & Run
 ```
-$ git clone ...srv-engine
-$ cd srv-engine
-$ pip install -r requirements.txt
-$ cd frontend
 $ npm install
-$ npm run deploy
-$ cd ..
-$ python manage.py migrate
-$ python manage.py runserver
+$ npm start
 ```
-Navigate to http://localhost:8000 and be happy :)
+Navigate to http://localhost:3000 and be happy :)
 
 # Release state
-Still on alpha (frontend been built). Beta comming this Jan/2017
+
+Still on alpha (some concept rework on progress). Beta comming on end Jan/2017, begin Feb/2017.
 
 # Some notes....
 
-The frontend initial setup uses the amazing [relay-fullstack](https://github.com/lvarayut/relay-fullstack).
+The initial setup uses the amazing [relay-fullstack](https://github.com/lvarayut/relay-fullstack).

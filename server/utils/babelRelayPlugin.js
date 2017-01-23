@@ -2,7 +2,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var jsonFile = path.join(__dirname, '../../schema.json');
+var jsonFile = path.join(__dirname, '../data/schema.json');
 
 // Read the schema.json file only if it exists, this fixed
 // the problem of using babelRelayPlugin, defined in .babelrc,

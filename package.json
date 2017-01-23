@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Relay Starter Kit - Integrated with Relay, GraphQL, Express, ES6/ES7, JSX, Webpack, Babel, Material Design Lite, and PostCSS",
   "scripts": {
-    "deploy": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.config.js ",
-    "dev-build": "npm run clean && cross-env NODE_ENV=dev webpack --config webpack.config.js ",
+    "start": "nodemon --watch server/data/**/*.js --exec \"npm run update && babel-node server/index.js\"",
+    "update": "babel-node server/utils/updateSchema.js",
+    "deploy": "npm run clean && cross-env NODE_ENV=production webpack --config webpack.config.js && npm run update && npm run build-server && cross-env NODE_ENV=production node ./build/index.js",
+    "build-server": "cross-env NODE_ENV=production ./node_modules/.bin/babel ./server --out-dir ./build",
     "lint": "eslint --ignore-path .gitignore client server",
     "heroku-postbuild": "cross-env NODE_ENV=production webpack --config webpack.config.js && cross-env NODE_ENV=production ./node_modules/.bin/babel ./server --out-dir ./lib",
-    "clean": "mkdir build"
+    "clean": "rm -rf build && mkdir build"
   },
   "pre-commit": "lint",
   "repository": {
@@ -49,8 +51,7 @@
     "pre-commit": "^1.2.2",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
-    "redbox-react": "^1.3.3",
-    "webpack-bundle-tracker": "^0.2.0"
+    "redbox-react": "^1.3.3"
   },
   "dependencies": {
     "autoprefixer": "^6.6.1",
