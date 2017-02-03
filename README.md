@@ -1,17 +1,7 @@
-# graph-app
-GraphQL ([Relay](https://facebook.github.io/relay/)) base app, with some data modeling sugar on top.
+# schema-analyser
+Open source framework and interface for database analysis. Relation fragmentation, data consistency... you name.
+Designed to be extensible, multi database, easy to use and fully dynamic.
 
-# Install & Run
-```
-$ npm install
-$ npm start
-```
-Navigate to http://localhost:3000 and be happy :)
+# Project state
 
-# Release state
-
-Still on alpha (some concept rework on progress). Beta comming on end Jan/2017, begin Feb/2017.
-
-# Some notes....
-
-The initial setup uses the amazing [relay-fullstack](https://github.com/lvarayut/relay-fullstack).
+Still on pre-alpha (some concept rework on progress). Alpha comming on end Feb/2017, begin Mar/2017.
