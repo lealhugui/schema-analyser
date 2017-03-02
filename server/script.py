@@ -11,7 +11,9 @@ def main():
     schemas = ["world"]
     with get_schema_instance("MY_SQL", db, schemas) as s:
         CACHE = s.tables
-    print([str(CACHE[t]) for t in CACHE])
+    for t in CACHE:
+        print(CACHE[t])
+        print("\n")
 
 
 

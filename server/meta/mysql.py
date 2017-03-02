@@ -2,7 +2,7 @@
 
 
 import pymysql.cursors
-from .schema import DBSchema, Table, Column
+from .schema import DBSchema, Table, Column, ForeignKey
 
 
 class MySQLSChema(DBSchema):
@@ -46,17 +46,16 @@ class MySQLSChema(DBSchema):
                     name=tbl.pop("TABLE_NAME"),
                     db_schema=tbl.pop("TABLE_SCHEMA"),
                     **tbl)
-                table_inst.columns = self._get_table_columns(table_inst)
+                table_inst.set_properties(self)
                 result[table_inst.name] = table_inst
 
         return result
 
-    def _get_table_columns(self, table):
-        super()._get_table_columns(table)
+    def _get_table_columns(self, table_instance):
         qry = "select * from information_schema.columns " \
               "where table_schema='{}' and table_name='{}'".format(
-                  table.db_schema,
-                  table.name
+                  table_instance.db_schema,
+                  table_instance.name
               )
         with self._meta.conn.cursor() as crs:
             crs.execute(qry)
@@ -66,3 +65,37 @@ class MySQLSChema(DBSchema):
                 clm_inst = Column(name=clm.pop("COLUMN_NAME"), **clm)
                 result[clm_inst.name] = clm_inst
         return result
+
+    def _get_fks(self, table_instance):
+        qry = " SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE" \
+              " WHERE TABLE_SCHEMA = '{}' AND TABLE_NAME = '{}' AND" \
+              " REFERENCED_TABLE_NAME IS NOT NULL ".format(
+                  table_instance.db_schema,
+                  table_instance.name
+              )
+        
+        with self._meta.conn.cursor() as crs:
+            crs.execute(qry)
+            foreign_keys = crs.fetchall()
+            result = dict()
+            for fkey in foreign_keys:
+                fk_inst = ForeignKey(name=fkey.pop("CONSTRAINT_NAME"), **fkey)
+                result[fk_inst.name] = fk_inst
+        return result
+
+    def _get_refs(self, table_instance):
+        qry = " SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE" \
+              " WHERE REFERENCED_TABLE_SCHEMA = '{}' " \
+               "AND REFERENCED_TABLE_NAME = '{}'".format(
+                  table_instance.db_schema,
+                  table_instance.name
+              )
+        
+        with self._meta.conn.cursor() as crs:
+            crs.execute(qry)
+            foreign_keys = crs.fetchall()
+            result = dict()
+            for fkey in foreign_keys:
+                fk_inst = ForeignKey(name=fkey.pop("CONSTRAINT_NAME"), **fkey)
+                result[fk_inst.name] = fk_inst
+        return result        
