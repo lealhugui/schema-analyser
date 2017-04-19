@@ -1,0 +1,13 @@
+.Schema-card {
+    width: 80%;
+    border: 1px solid black;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.Table-card {
+    width: 20%;
+    display: block;
+    border: 1px solid black;
+    border-radius: 5px 5px 5px 5px;
+    float: left;
+}
