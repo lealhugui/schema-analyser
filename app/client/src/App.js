@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { SchemaCard } from './Cards';
+import JsonApiReq from './Requests';
 
 class App extends Component {
 
@@ -13,36 +14,21 @@ class App extends Component {
   }
 
   handleClickGet() {
-    let opt = {
-      method: 'GET',
-      headers: new Headers(),
-      mode: 'cors',
-      cache: 'default'
-    };
-    let req = new Request('api/db_map_view/', opt);
-
-    fetch(req).then((response) => {
-      return response.json();
-    }).then((jsonData) => {
-      alert(JSON.stringify(jsonData))
-      this.setState({data: jsonData});
-    })    
+    let uri = window.location.hostname+":8000";
+    new JsonApiReq(uri, 'api/db_map_view/').get()
+      .then((jsonData) => {
+        this.setState({data: jsonData});
+      });
   }
 
   handleClickRebuild() {
-    let opt = {
-      method: 'POST',
-      headers: new Headers(),
-      mode: 'cors',
-      cache: 'default'
-    };
-    let req = new Request('api/rebuild_db_map/', opt);
 
-    fetch(req).then((response) => {
-      return response.text();
-    }).then((txt) => {
-      alert(txt);
-    })
+    let uri = window.location.hostname+":8000";
+    new JsonApiReq(uri, 'api/rebuild_db_map/').post()
+      .then((jsonData) => {
+        alert(JSON.stringify(jsonData));
+      });
+
   }
 
   render() {

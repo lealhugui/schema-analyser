@@ -1,2 +1,3 @@
 PyMySQL==0.7.10
 Django==1.11
+django-cors-headers
