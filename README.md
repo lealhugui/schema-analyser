@@ -4,4 +4,4 @@ Designed to be extensible, multi database, easy to use and fully dynamic.
 
 # Project state
 
-Still on pre-alpha (some concept rework on progress). Alpha comming on end Feb/2017, begin Mar/2017.
+Still on alpha. First full release by the end of Jun/2017
