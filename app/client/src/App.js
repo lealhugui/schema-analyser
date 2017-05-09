@@ -24,7 +24,7 @@ class App extends Component {
             <div>
               <div className="app-intro">Welcome</div>
                 <CSSTransitionGroup
-                transitionName="example"
+                transitionName="rTransition"
                 transitionAppear={true}
                 transitionAppearTimeout={500}
                 transitionEnterTimeout={500}

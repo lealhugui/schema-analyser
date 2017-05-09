@@ -22,20 +22,20 @@ div {
   font-size: large;
 }
 
-.example-enter {
+.rTransition-enter {
   opacity: 0.01;
 }
 
-.example-enter.example-enter-active {
+.rTransition-enter.rTransition-enter-active {
   opacity: 1;
   transition: opacity 500ms ease;
 }
 
-.example-leave {
+.rTransition-leave {
   opacity: 1;
 }
 
-.example-leave.example-leave-active {
+.rTransition-leave.rTransition-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease;
 }
