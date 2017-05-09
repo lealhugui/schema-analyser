@@ -1,10 +1,15 @@
 import React,  { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Cards.css';
 
 export class TableCard extends Component{
     render(){
         let listWrapperStyles = {
             marginTop: '5px'
+        }
+
+        let minLink = {
+            fontSize: "x-small"
         }
 
         let flds = this.props.table.props.fields.map(
@@ -17,9 +22,10 @@ export class TableCard extends Component{
 
         return (
             <div className="table-card" title={this.props.table.table_name}>
-                <span className="obj-identifier">[obj]</span>
                 <b>{this.props.table.table_name}</b>
+                <span className="obj-identifier">[obj]</span>
                 <div style={listWrapperStyles}>{flds}</div>
+                <div style={minLink}><Link to={'/table/'+ this.props.table.table_name}>mais informações</Link></div>
             </div>
         );
     }
@@ -29,7 +35,6 @@ export class SchemaCard extends Component{
 
     render(){
         let listTables = (<div></div>);
-        console.log(this.props)
         if (this.props.schema.tables !== null && this.props.schema.tables.length > 0)
         {
             listTables = this.props.schema.tables.map(
