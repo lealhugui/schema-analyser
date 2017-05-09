@@ -1,4 +1,8 @@
-
+/*
+    Simple request wrapper around the  browser native fetch API.
+    This class may never exist on release state (in exchange for a more robust API),
+    but for the time being, it will be the main source of requests for the backend API.
+*/ 
 class JsonApiReq{
 
     domain_name = null;

@@ -20,6 +20,9 @@ class App extends Component {
     new JsonApiReq(uri, 'api/db_map_view/').get()
       .then((jsonData) => {
         this.setState({data: jsonData});
+      })
+      .catch((a, b, c) => {
+        alert(a);
       });
   }
 
@@ -29,6 +32,9 @@ class App extends Component {
     new JsonApiReq(uri, 'api/rebuild_db_map/').post()
       .then((jsonData) => {
         alert(JSON.stringify(jsonData));
+      })
+      .catch((a, b, c) => {
+        alert(a);
       });
 
   }
