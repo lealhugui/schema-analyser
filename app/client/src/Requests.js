@@ -5,7 +5,7 @@ class JsonApiReq{
     endpoint = null;
     https=false;
     constructor(domain, endpoint=null, use_https=false){
-        this.domain_name = domain
+        this.domain_name = domain;
         this.endpoint = endpoint;
         this.https = use_https;
     }

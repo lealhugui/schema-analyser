@@ -15,6 +15,8 @@ class TableField(models.Model):
 
     table = models.ForeignKey('Table', on_delete=models.CASCADE)
     field_name = models.CharField(max_length=250)
+    allow_null = models.BooleanField(default=False)
+    inner_type = models.CharField(max_length=250, default="")
 
 class ForeignKey(models.Model):
 

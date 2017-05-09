@@ -23,5 +23,4 @@ urlpatterns = [
     
     url(r'api/', include(api_urls.urlpatterns)),
     url(r'^admin/', admin.site.urls),
-    url(r'^(?P<path>(.*))$', views.InterfaceView.statics),
 ]

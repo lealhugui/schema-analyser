@@ -1,7 +1,7 @@
 #_*_ coding: utf-8 _*_
 
 from .schema import SCHEMA_TYPES
-from .mysql import MySQLSChema
+from .mysql import MySQLSchema
 
 def get_schema_instance(db_type, database, schemas=[]):
     """Factory"""
@@ -9,4 +9,4 @@ def get_schema_instance(db_type, database, schemas=[]):
         raise Exception("Unknow schema type")
 
     if db_type == "MY_SQL":
-        return MySQLSChema(database, schemas)
+        return MySQLSchema(database, schemas)

@@ -5,7 +5,7 @@ import pymysql.cursors
 from .schema import DBSchema, Table, Column, ForeignKey
 
 
-class MySQLSChema(DBSchema):
+class MySQLSchema(DBSchema):
 
 #    def __init__(self, database, schemas=[]):
 #        super().__init__(database, schemas)

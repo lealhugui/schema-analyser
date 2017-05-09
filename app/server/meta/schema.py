@@ -4,6 +4,12 @@ SCHEMA_TYPES = (
     "MY_SQL",
 )
 
+def meta_factory():
+    sub = tuple()
+    attr = dict()
+    return type('_meta', sub, attr)
+
+
 class Table(object):
     """DataBase Table representation"""
 
@@ -16,6 +22,9 @@ class Table(object):
     _columns = _fks = _refs = None
 
     def __init__(self, **kwargs):
+        if self._meta is not None:
+            self._meta = meta_factory()
+
         if "name" in kwargs:
             self.name = kwargs.pop("name")
         if "db_schema" in kwargs:
@@ -67,6 +76,9 @@ class Column(object):
         pass
 
     def __init__(self, **kwargs):
+        if self._meta is not None:
+            self._meta = meta_factory()
+
         if "name" in kwargs:
             self.name = kwargs.pop("name")
 
@@ -79,6 +91,8 @@ class ForeignKey(object):
         pass
     
     def __init__(self, **kwargs):
+        if self._meta is not None:
+            self._meta = meta_factory()
         if "name" in kwargs:
             self.name = kwargs.pop("name")
 
@@ -93,7 +107,6 @@ class DBSchema(object):
         tables = None
         work_schemas = None
         database = None
-
 
     def __init__(self, database, schemas=[]):
         self._meta.database = database

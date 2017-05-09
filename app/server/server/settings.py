@@ -126,5 +126,19 @@ USE_TZ = True
 
 STATIC_URL = '/api-static/'
 
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+    },
+}
