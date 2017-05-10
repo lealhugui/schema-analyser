@@ -21,7 +21,7 @@ def db_map_view(request):
                 t_props = dict()
                 data = list()
                 if len(tbl.tablefield_set.all()) > 0:
-                    data = [model_to_dict(tf) for tf in tbl.tablefield_set.all()]
+                    data = [model_to_dict(tf) for tf in tbl.tablefield_set.all().order_by('-is_primary_key')]
                 t_props["fields"] = data
                 t = model_to_dict(tbl)
                 t["props"] = t_props
@@ -50,6 +50,8 @@ def  rebuild_db_map(request):
 
             for tbl in [CACHE[t] for t in CACHE if CACHE[t].db_schema==scm]:
 
+                
+
                 t = mdl.Table.objects.create(schema=s, table_name=tbl.name)
                 for clm in tbl.columns:
                     d = {
@@ -75,12 +77,32 @@ def  rebuild_db_map(request):
                     mdl.TableField.objects.create(
                         table=t, 
                         field_name=clm, 
-                        inner_type=tbl.columns[clm]._meta.COLUMN_TYPE
+                        inner_type=tbl.columns[clm]._meta.COLUMN_TYPE,
+                        allow_null=tbl.columns[clm]._meta.IS_NULLABLE=="YES",
+                        is_primary_key= clm in tbl.pk
                     )
 
         with open('dump.json', 'w') as f:
             f.write(json.dumps(log_d, indent=4))
             
         return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'err': str(e)})
+
+
+def tables_with_pks(request):
+    try:
+        result = list()
+        for scm in mdl.Schema.objects.all():
+            for tbl in scm.table_set.all():
+                t = {"Table Name": tbl.table_name}
+                t["Primary Keys"] = ", ".join([
+                    f.field_name 
+                    for f in 
+                    tbl.tablefield_set.filter(is_primary_key=True).all()
+                ])
+                
+                result.append(t)
+        return JsonResponse(result, safe=False)
     except Exception as e:
         return JsonResponse({'success': False, 'err': str(e)})

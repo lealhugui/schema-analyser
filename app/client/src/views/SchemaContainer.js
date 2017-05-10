@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { SchemaCard } from './Cards';
 import JsonApiReq from '../Requests';
-
-const BASE_URI = window.location.hostname;
+import { API_URL } from '../constants';
 
 class SchemaContainer extends Component{
 
   constructor (props) {
     super(props);
     this.state = {data: null};
-    this.handleClickRebuild = this.handleClickRebuild.bind(this);
+    
   }
 
   getCache() {
-    let uri = BASE_URI+":8000";
+    let uri = API_URL;
     new JsonApiReq(uri, 'api/db_map_view/').get()
       .then((jsonData) => {
         if('success' in jsonData){
@@ -28,38 +27,17 @@ class SchemaContainer extends Component{
       });
   }
 
-  handleClickRebuild() {
-
-    let uri = BASE_URI+":8000";
-    new JsonApiReq(uri, 'api/rebuild_db_map/').post()
-      .then((jsonData) => {
-         if('success' in jsonData){
-          if(jsonData.success===false){
-            throw jsonData.err;
-          }
-        }
-        alert(JSON.stringify(jsonData));
-      })
-      .catch((err) => {
-        alert(err);
-      });
-
-  }
-
   componentDidMount(){
   	this.getCache();
   }
 
   render() {
     let marginTop = {
-      'marginTop': '5px'
+      'marginTop': '5px',
+      marginLeft: 'auto',
+      marginRight: 'auto'
     }
-    console.log(this.props.location);
     return (
-      <div>
-        <div>
-          <button onClick={this.handleClickRebuild} >Rebuild cache</button>
-        </div>
         <div>
           {this.state.data != null ? (
             <div>
@@ -69,7 +47,6 @@ class SchemaContainer extends Component{
             <div style={marginTop}>No Schemas</div>
           )}
         </div>
-      </div>
 
     );
   }

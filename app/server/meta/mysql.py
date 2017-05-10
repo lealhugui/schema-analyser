@@ -12,7 +12,10 @@ class MySQLSchema(DBSchema):
 
     def _init_conn(self, db_name, schemas=[]):
         if self._meta.conn is not None:
-            self._meta.conn.close()
+            try:
+                self._meta.conn.close()
+            except:
+                pass
             self._meta.conn = None
         self._meta.work_schemas = schemas
 
@@ -26,7 +29,10 @@ class MySQLSchema(DBSchema):
 
     def _close_conn(self):
         if self._meta.conn is not None:
-            self._meta.conn.close()
+            try:
+                self._meta.conn.close()
+            except:
+                pass
 
     def _get_tables(self):
 
@@ -98,4 +104,25 @@ class MySQLSchema(DBSchema):
             for fkey in foreign_keys:
                 fk_inst = ForeignKey(name=fkey.pop("CONSTRAINT_NAME"), **fkey)
                 result[fk_inst.name] = fk_inst
-        return result        
+        return result
+    
+    def _get_pk(self, table_instance):
+        qry = " SELECT c.* FROM information_schema.table_constraints t " \
+              " INNER JOIN information_schema.key_column_usage k " \
+              " USING(constraint_name,table_schema,table_name) " \
+              " INNER JOIN information_schema.columns c " \
+              " USING (table_schema, table_name, column_name) " \
+              " WHERE t.constraint_type='PRIMARY KEY' " \
+              " AND t.table_schema='{}' " \
+              " AND t.table_name='{}' ".format(
+                  table_instance.db_schema,
+                  table_instance.name
+              )
+        with self._meta.conn.cursor() as crs:
+            crs.execute(qry)
+            colmns = crs.fetchall()
+            result = dict()
+            for clm in colmns:
+                clm_inst = Column(name=clm.pop("COLUMN_NAME"), **clm)
+                result[clm_inst.name] = clm_inst
+        return result

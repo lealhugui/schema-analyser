@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 class TableInfo extends Component {
 	render(){
-		console.log(this.props.location)
 		return (
 			<div>
 				<p>#TODO: missing TableInfo Screen</p>

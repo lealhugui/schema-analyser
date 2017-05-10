@@ -1,3 +1,5 @@
+/* generic CSS */
+
 div {
   height: 100%;
 }
@@ -22,6 +24,9 @@ div {
   font-size: large;
 }
 
+/* END generic CSS */
+
+/* view transitions */
 .rTransition-enter {
   opacity: 0.01;
 }
@@ -39,9 +44,73 @@ div {
   opacity: 0.01;
   transition: opacity 300ms ease;
 }
+/* END view transitions */
 
+/* logo animation */
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+/* END logo animation */
 
+/* Dynamic Table */
+
+table.dyn-tbl {
+  margin-top: 5px;
+  margin-left: auto;  
+  margin-right: auto;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+table.dyn-tbl td{
+  font-size: small;
+}
+
+table.dyn-tbl td, table.dyn-tbl th {
+  border: 1px solid black;
+  padding-right: 4px;
+}
+table.dyn-tbl tr:first-child th {
+  border-top: 0;
+}
+table.dyn-tbl tr:last-child td {
+  border-bottom: 0;
+}
+table.dyn-tbl tr td:first-child,
+table.dyn-tbl tr th:first-child {
+  border-left: 0;
+}
+table.dyn-tbl tr td:last-child,
+table.dyn-tbl tr th:last-child {
+  border-right: 0;
+}
+
+/* END Dynamic Table */
+
+
+/* navbar */
+nav.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+nav.navbar li {
+    float: left;
+}
+
+nav.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+nav.navbar li a:hover {
+    background-color: #111;
+}
+/* END navbar */

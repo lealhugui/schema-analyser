@@ -46,18 +46,22 @@ class Table(object):
         return "{}.{}\n[{}]\n(fks:{})\n(refs:{})".format(self.db_schema, self.name, cols, fkss, reffs)
 
     def set_properties(self, dbschema_instance):
-        """Global setter for the properties. It should recieve an DBSchema instance and it will load the dicts containing colums, fks, and fk_refs"""
+        """Global setter for the properties. It should recieve an DBSchema instance and it will load the 
+        dicts containing colums, fks, and fk_refs"""
         if not issubclass(dbschema_instance.__class__, DBSchema):
             raise ValueError("dbschema_instance is not a valid DBSchema")
 
         self._columns = dbschema_instance._get_table_columns(self)
         self._fks = dbschema_instance._get_fks(self)
         self._refs = dbschema_instance._get_refs(self)
+        self._pk = dbschema_instance._get_pk(self)
 
     @property
     def columns(self):
         """Columns of the table"""
         return self._columns
+
+    @property
 
     @property
     def fks(self):
@@ -67,7 +71,12 @@ class Table(object):
     @property
     def fk_refs(self):
         """Foreign Keys pointing to the table"""
-        return self._refs    
+        return self._refs
+
+    @property
+    def pk(self):
+        """Primary Keys of the table"""
+        return self._pk
 
 class Column(object):
     """Database Table's column representation"""
@@ -148,6 +157,10 @@ class DBSchema(object):
     
     def _get_refs(self, table_instance):
         """Abstract method for getting all Foreign Keys referencing a table"""
+        raise NotImplementedError()
+
+    def _get_pk(self, table_instance):
+        """Abstract method for getting all Columns of the Table's PK"""
         raise NotImplementedError()
 
 

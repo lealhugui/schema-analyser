@@ -8,13 +8,12 @@ export class TableCard extends Component{
             marginTop: '5px'
         }
 
-        let minLink = {
-            fontSize: "x-small"
-        }
-
         let flds = this.props.table.props.fields.map(
             (fld) => (
-                <div key={fld.field_name} className="table-field " title={fld.field_name}>
+                <div key={fld.field_name}
+                     className="table-field "
+                     title={fld.field_name}
+                     style={{color: fld.is_primary_key===true ? 'red':'inherit'}} >
                     {fld.field_name}<span className="fld-type">{fld.inner_type}</span>
                 </div>
             )
@@ -22,10 +21,9 @@ export class TableCard extends Component{
 
         return (
             <div className="table-card" title={this.props.table.table_name}>
-                <b>{this.props.table.table_name}</b>
-                <span className="obj-identifier">[obj]</span>
+                <b>{this.props.table.table_name.toUpperCase()}</b>
+                <span className="obj-identifier"><Link to={'/table/'+ this.props.table.table_name}>[obj]</Link></span>
                 <div style={listWrapperStyles}>{flds}</div>
-                <div style={minLink}><Link to={'/table/'+ this.props.table.table_name}>mais informações</Link></div>
             </div>
         );
     }
@@ -44,7 +42,7 @@ export class SchemaCard extends Component{
         return (
             <div className="schema-card">
                 <div>
-                    Schema Name: <b>{this.props.schema.schema_name}</b>
+                    Schema Name: <b>{this.props.schema.schema_name.toUpperCase()}</b>
                 </div>
                 {listTables}
             </div>

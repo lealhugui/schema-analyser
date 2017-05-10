@@ -1,0 +1,1 @@
+export const API_URL = window.location.hostname+":8000";
