@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
+import './Grid.css';
 import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
 import TablesWithPks from './views/TablesWithPks';
@@ -56,7 +57,7 @@ class App extends Component {
               <h2>schema-analyser</h2>
             </div>
             <div>
-              <div>
+              <span>
                 <nav className="navbar">
                   <ul>
                     <li><Link to='/'>HOME</Link></li>
@@ -67,21 +68,22 @@ class App extends Component {
                   </ul>
                   
                 </nav>
+              </span>
+              <div className="app-content">
+                <CSSTransitionGroup style={{height: '100%'}}
+                transitionName="rTransition"
+                transitionAppear={true}
+                transitionAppearTimeout={500}
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={300}>
+                  <Switch key={location.key}>
+                    <Route location={location} exact path="/" component={SchemaContainer}/>
+                    <Route location={location} path='/schemas' component={SchemaContainer} />
+                    <Route location={location} path='/table/:name' component={TableInfo} />
+                    <Route location={location} path='/pks' component={TablesWithPks} />
+                  </Switch>
+                </CSSTransitionGroup>
               </div>
-
-              <CSSTransitionGroup
-              transitionName="rTransition"
-              transitionAppear={true}
-              transitionAppearTimeout={500}
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}>
-                <Switch key={location.key}>
-                  <Route location={location} exact path="/" component={SchemaContainer}/>
-                  <Route location={location} path='/schemas' component={SchemaContainer} />
-                  <Route location={location} path='/table/:name' component={TableInfo} />
-                  <Route location={location} path='/pks' component={TablesWithPks} />
-                </Switch>
-              </CSSTransitionGroup>
             </div>
 
               
