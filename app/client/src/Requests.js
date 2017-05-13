@@ -22,8 +22,8 @@ class JsonApiReq{
             cache: 'default'
         };
 
-        let url = ((this.https ? "https://" : "http://") + 
-            this.domain_name + 
+        let url = ((this.https ? "https://" : "http://") +
+            this.domain_name +
             (this.domain_name.substring(this.domain_name.length-1,1) === "/" ? "" : "/") +
             (this.endpoint));
         let req = new Request(url, opt);
@@ -39,8 +39,8 @@ class JsonApiReq{
             mode: 'cors',
             cache: 'default'
         };
-        let url = ((this.https ? "https://" : "http://") + 
-            this.domain_name + 
+        let url = ((this.https ? "https://" : "http://") +
+            this.domain_name +
             (this.domain_name.substring(this.domain_name.length-1,1) === "/" ? "" : "/") +
             (this.endpoint));
         let req = new Request(url, opt);

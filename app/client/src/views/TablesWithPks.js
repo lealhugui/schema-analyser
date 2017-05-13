@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-/* import { Link } from 'react-router-dom'; */
 import JsonApiReq from '../Requests';
 import { API_URL } from '../constants';
 import DynamicTable from '../DynamicTable';
 
+/**
+ * @description View that shows a grid with the tables with their PKs
+ */
 class TablesWithPks extends Component{
 
     constructor(props){
@@ -25,7 +27,7 @@ class TablesWithPks extends Component{
                 let thisData = [];
                 for(let i=0; i<jsonData.length; i++){
                     thisData.push({
-                        "Table Name": jsonData[i]["Table Name"],
+                        "Table Name": jsonData[i]["Table Name"].toUpperCase(),
                         "Primary Keys": jsonData[i]["Primary Keys"],
                         "_opt": {
                             links: [{

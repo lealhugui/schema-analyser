@@ -11,6 +11,7 @@ logger = logging.getLogger('django')
 
 def db_map_view(request):
     """returns the dbmap loaded on cache"""
+
     try:
         result = list()
         for scm in mdl.Schema.objects.all():
@@ -31,28 +32,34 @@ def db_map_view(request):
     except Exception as e:
         return JsonResponse({'success': False, 'err': str(e)})
 
+
 def table_info(request, name=None):
-    if name is None:
-        return JsonResponse({'success': False, 'err': "Invalid table name"})
+    """Return the metadata of the requested table"""
+    
+    try:
+        if name is None:
+            return JsonResponse({'success': False, 'err': "Invalid table name"})
 
-    t = mdl.Table.objects.filter(table_name=name)[0]
+        t = mdl.Table.objects.filter(table_name=name)[0]
 
-    if not t:   
-        return JsonResponse({'success': False, 'err': "Table not found"})
+        if not t:   
+            return JsonResponse({'success': False, 'err': "Table not found"})
 
-    t_props = dict()
-    data = list()
-    if len(t.tablefield_set.all()) > 0:
-        data = [model_to_dict(tf) for tf in t.tablefield_set.all().order_by('-is_primary_key')]
-    t_props["fields"] = data
-    this_tbl = model_to_dict(t)
-    this_tbl["props"] = t_props
+        t_props = dict()
+        data = list()
+        if len(t.tablefield_set.all()) > 0:
+            data = [model_to_dict(tf) for tf in t.tablefield_set.all().order_by('-is_primary_key')]
+        t_props["fields"] = data
+        this_tbl = model_to_dict(t)
+        this_tbl["props"] = t_props
 
-    return JsonResponse(this_tbl, safe=False)
-
+        return JsonResponse(this_tbl, safe=False)
+    except Exception as e:
+        return JsonResponse({'success': False, 'err': str(e)})
 
 
 def  rebuild_db_map(request):
+    """Collect the information of the observed database"""
 
     CACHE = None
     try:
@@ -112,6 +119,8 @@ def  rebuild_db_map(request):
 
 
 def tables_with_pks(request):
+    """Return a list of the tables with their respective PKs"""
+
     try:
         result = list()
         for scm in mdl.Schema.objects.all():

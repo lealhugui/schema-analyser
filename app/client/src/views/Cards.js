@@ -1,8 +1,8 @@
-import React,  { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Cards.css';
 
-export var TableCard = (props) => {
+export const TableCard = (props) => {
     let listWrapperStyles = {
         marginTop: '5px'
     }
@@ -33,24 +33,23 @@ export var TableCard = (props) => {
     );
 }
 
-export class SchemaCard extends Component{
+export const SchemaCard = (props) => {
 
-    render(){
-        let listTables = (<div></div>);
-        if (this.props.schema.tables !== null && this.props.schema.tables.length > 0)
-        {
-            listTables = this.props.schema.tables.map(
-                (table) => <TableCard key={table.table_name} table={table} />
-            )
-        }
-        return (
-            <div className="schema-card">
-                <div>
-                    Schema Name: <b>{this.props.schema.schema_name.toUpperCase()}</b>
-                </div>
-                {listTables}
-            </div>
-        );
+    let listTables = (<div></div>);
+    if (props.schema.tables !== null && props.schema.tables.length > 0)
+    {
+        listTables = props.schema.tables.map(
+            (table) => <TableCard key={table.table_name} table={table} />
+        )
     }
+    return (
+        <div className="schema-card">
+            <div>
+                Schema Name: <b>{props.schema.schema_name.toUpperCase()}</b>
+            </div>
+            {listTables}
+        </div>
+    );
+
 }
 

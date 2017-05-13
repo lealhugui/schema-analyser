@@ -15,29 +15,26 @@ import JsonApiReq from './Requests';
 import { API_URL } from './constants';
 import createBrowserHistory from 'history/createBrowserHistory';
 
+/*
+  Main app component and router
+*/
 class App extends Component {
-  
+
   constructor(){
     super();
     this.handleClickRebuild = this.handleClickRebuild.bind(this);
   }
 
-  redirectAfterBuild(loc){
-    loc.push("/");
-  }
-
   handleClickRebuild(e, history) {
     e.preventDefault();
-    let uri = API_URL;
-    new JsonApiReq(uri, 'api/rebuild_db_map/').post()
+    new JsonApiReq(API_URL, "api/rebuild_db_map/").post()
       .then((jsonData) => {
-         if('success' in jsonData){
+         if("success" in jsonData){
           if(jsonData.success===false){
             throw jsonData.err;
           }
         }
-        alert(JSON.stringify(jsonData));
-        history.push('/');
+        history.push("/");
       })
       .catch((err) => {
         alert(err);
