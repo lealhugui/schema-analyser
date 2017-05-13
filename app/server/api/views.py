@@ -31,6 +31,27 @@ def db_map_view(request):
     except Exception as e:
         return JsonResponse({'success': False, 'err': str(e)})
 
+def table_info(request, name=None):
+    if name is None:
+        return JsonResponse({'success': False, 'err': "Invalid table name"})
+
+    t = mdl.Table.objects.filter(table_name=name)[0]
+
+    if not t:   
+        return JsonResponse({'success': False, 'err': "Table not found"})
+
+    t_props = dict()
+    data = list()
+    if len(t.tablefield_set.all()) > 0:
+        data = [model_to_dict(tf) for tf in t.tablefield_set.all().order_by('-is_primary_key')]
+    t_props["fields"] = data
+    this_tbl = model_to_dict(t)
+    this_tbl["props"] = t_props
+
+    return JsonResponse(this_tbl, safe=False)
+
+
+
 def  rebuild_db_map(request):
 
     CACHE = None

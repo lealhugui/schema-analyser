@@ -25,7 +25,7 @@ html, body, div, nav {
 }
 
 .app-content {
-  height: 1000px;
+  height: 100%;
 }
 
 /* END generic CSS */
@@ -60,17 +60,32 @@ html, body, div, nav {
 /* Dynamic Table */
 
 table.dyn-tbl {
+  width: 90%;
+  height: 100%;
   margin-top: 5px;
-  margin-left: auto;  
+  margin-left: 20px;  
   margin-right: auto;
   border-collapse: collapse;
   border: 1px solid black;
 }
+table.dyn-tbl tr.thead{
+  background: #FFF !important;
+}
+table.dyn-tbl tr.thead td {
+  font-weight: bold;
+  font-size: medium !important;
+}
+table.dyn-tbl tr:nth-child(even) {
+  background: #CCC;
+}
+table.dyn-tbl tr:nth-child(odd) {
+  background: inherit
+}
 table.dyn-tbl td{
   font-size: small;
 }
-
-table.dyn-tbl td, table.dyn-tbl th {
+table.dyn-tbl td, 
+table.dyn-tbl th {
   border: 1px solid black;
   padding-right: 4px;
 }
@@ -94,7 +109,6 @@ table.dyn-tbl tr th:last-child {
 
 /* navbar */
 nav.navbar ul {
-  height: 50px;
   list-style-type: none;
   margin: 0;
   padding: 0;

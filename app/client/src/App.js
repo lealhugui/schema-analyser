@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import './Grid.css';
 import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
 import TablesWithPks from './views/TablesWithPks';

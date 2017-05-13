@@ -1,14 +1,54 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import JsonApiReq from '../Requests';
+import { API_URL } from '../constants';
+import { TableCard } from './Cards';
+import './TableInfo.css';
 
 
 class TableInfo extends Component {
+
+	constructor(props){
+		
+		super(props);
+		this.state = {table: null};
+		this.componentDidMount = this.componentDidMount.bind(this);
+	}
+
+	componentDidMount(){
+		
+		new JsonApiReq(API_URL, 'api/tableinfo/'+this.props.match.params.name+"/").get()
+            .then((jsonData) => {
+                if('success' in jsonData){
+                    if(jsonData.success===false){
+                        throw jsonData.err;
+                    }
+                }
+                this.setState({table_info: jsonData});
+            })
+            .catch((err) => {
+                alert(err);
+            });
+            
+	}
+
 	render(){
 		return (
 			<div>
-				<p>#TODO: missing TableInfo Screen</p>
-				<p>{this.props.match.params.name}</p>
-				<Link to='/schemas'>Home</Link>
+				<div className="app-content">
+					{typeof(this.state.table_info) === 'undefined' ?
+						(<span>Loading</span>) :
+						(
+							<div>
+								<TableCard table={this.state.table_info} />
+								<h2>
+									<div className="table-info-wrapper">
+										TABLE <span style={{fontStyle: 'italic'}}>"{this.state.table_info.table_name.toUpperCase()}"</span>
+									</div>
+								</h2>
+							</div>
+						)
+					}
+				</div>
 			</div>
 		);
 	}

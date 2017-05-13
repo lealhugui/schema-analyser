@@ -2,13 +2,14 @@ import React,  { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Cards.css';
 
-export class TableCard extends Component{
-    render(){
-        let listWrapperStyles = {
-            marginTop: '5px'
-        }
-
-        let flds = this.props.table.props.fields.map(
+export var TableCard = (props) => {
+    let listWrapperStyles = {
+        marginTop: '5px'
+    }
+    let flds = null;
+    if(typeof(props.table) !== 'undefined'){
+        console.log(props.table.props.fields);
+        flds = props.table.props.fields.map(
             (fld) => (
                 <div key={fld.field_name}
                      className="table-field "
@@ -18,15 +19,18 @@ export class TableCard extends Component{
                 </div>
             )
         );
-
-        return (
-            <div className="table-card" title={this.props.table.table_name}>
-                <b>{this.props.table.table_name.toUpperCase()}</b>
-                <span className="obj-identifier"><Link to={'/table/'+ this.props.table.table_name}>[obj]</Link></span>
-                <div style={listWrapperStyles}>{flds}</div>
-            </div>
-        );
     }
+    else{
+        return (<div>Ref Error</div>);
+    }
+
+    return (
+        <div className="table-card" title={props.table.table_name}>
+            <b>{props.table.table_name.toUpperCase()}</b>
+            <span className="obj-identifier"><Link to={'/table/'+ props.table.table_name}>[obj]</Link></span>
+            <div style={listWrapperStyles}>{flds}</div>
+        </div>
+    );
 }
 
 export class SchemaCard extends Component{
