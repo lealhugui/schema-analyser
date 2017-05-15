@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
  *  so it uses the first object as "template" to render the others objects. The object can contain a propery
  *  named "_opt", wich should be an object, with the following properties:
  *
- *      links: an array of links that should be used to wrap each, one of the columns. Must contain these 2 parameters:
+ *      links: an array of links that should be used to wrap each one of the columns. Must contain these 2 parameters:
  *          to: the href to follow
  *          columnName: the column to wrap
  *  

@@ -15,6 +15,7 @@ class JsonApiReq{
     }
 
     get(){
+        
         let opt = {
             method: 'GET',
             headers: new Headers(),
@@ -28,9 +29,9 @@ class JsonApiReq{
             (this.endpoint));
         let req = new Request(url, opt);
 
-        return fetch(req).then((response) => {
+        return fetch(req).then((response) => {  
             return response.json();
-        })
+        });
     }
     post(payload=null){
         let opt = {
@@ -47,7 +48,7 @@ class JsonApiReq{
 
         return fetch(req).then((response) => {
             return response.json();
-        })
+        });
     }
 }
 export default JsonApiReq;

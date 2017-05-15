@@ -12,7 +12,10 @@ import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
 import TablesWithPks from './views/TablesWithPks';
 import JsonApiReq from './Requests';
-import { API_URL } from './constants';
+import { 
+  API_URL,
+  addLogoAnimation,
+  removeLogoAnimation } from './constants';
 import createBrowserHistory from 'history/createBrowserHistory';
 
 /*
@@ -27,6 +30,7 @@ class App extends Component {
 
   handleClickRebuild(e, history) {
     e.preventDefault();
+    addLogoAnimation();
     new JsonApiReq(API_URL, "api/rebuild_db_map/").post()
       .then((jsonData) => {
          if("success" in jsonData){
@@ -39,6 +43,7 @@ class App extends Component {
       .catch((err) => {
         alert(err);
       });
+      removeLogoAnimation();
 
   }
 
@@ -49,8 +54,10 @@ class App extends Component {
         <Route render={({ match, location, history }) => (
           <div className="app">
             <div className="app-header">
-              <img src={logo} className="app-logo" alt="logo" />
-              <h2>schema-analyser</h2>
+              <div className="app-info">
+                <div className="app-info element"><img id="app-logo" src={logo} className="app-logo" alt="logo" /></div>
+                <div className="app-info element"><h2 style={{height:"100%"}}>schema-analyser</h2></div>   
+              </div>
             </div>
             <div>
               <span>

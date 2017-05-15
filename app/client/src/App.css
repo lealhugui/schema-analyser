@@ -9,15 +9,40 @@ html, body, div, nav {
 }
 
 .app-logo {
+  height: 45px;
+}
+
+.app-logo.animated {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
 }
 
 .app-header {
   background-color: #222;
-  height: 150px;
+  height: 100px;
   padding: 20px;
   color: white;
+}
+
+.app-info {
+  height: 100px;  
+  width: 30%;
+  position: relative;
+  float: right;
+}
+
+.app-info.element{
+  height: 100%;
+  line-height: 60px;
+  width: 40%;
+  position: relative;
+  float: right;  
+  display: block;
+  margin: auto;
+}
+.app-info.element #app-logo{
+  height: 100%;
+  width: 30%;
 }
 
 .app-intro {

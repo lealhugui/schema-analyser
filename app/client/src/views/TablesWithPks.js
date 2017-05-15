@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import JsonApiReq from '../Requests';
-import { API_URL } from '../constants';
+import { 
+    API_URL, 
+    removeLogoAnimation, 
+    addLogoAnimation } from '../constants';
 import DynamicTable from '../DynamicTable';
 
 /**
@@ -17,6 +20,8 @@ class TablesWithPks extends Component{
     }
 
     componentDidMount(){
+        addLogoAnimation();
+
         new JsonApiReq(API_URL, 'api/table_pk_data/').get()
             .then((jsonData) => {
                 if('success' in jsonData){
@@ -42,6 +47,7 @@ class TablesWithPks extends Component{
             .catch((err) => {
                 alert(err);
             });
+            removeLogoAnimation();
     }
 
 
