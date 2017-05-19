@@ -11,7 +11,6 @@ class TableInfo extends Component {
 		
 		super(props);
 		this.state = {table: null};
-		this.componentDidMount = this.componentDidMount.bind(this);
 	}
 
 	componentDidMount(){

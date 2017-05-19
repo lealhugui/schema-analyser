@@ -8,7 +8,7 @@ class SchemaContainer extends Component{
   constructor (props) {
     super(props);
     this.state = {data: null};
-    
+    this.getCache = this.getCache.bind(this);
   }
 
   getCache() {

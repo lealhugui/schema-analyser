@@ -62,8 +62,6 @@ class Table(object):
         return self._columns
 
     @property
-
-    @property
     def fks(self):
         """Foreign Keys on the table"""
         return self._fks

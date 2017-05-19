@@ -15,7 +15,7 @@ class TablesWithPks extends Component{
         super(props);
         this.columns = ["Table Name", "Primary Keys"];
         this.state = {
-            data: [this.columns]
+            data: []
         };
     }
 

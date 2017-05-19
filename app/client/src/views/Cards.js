@@ -8,7 +8,6 @@ export const TableCard = (props) => {
     }
     let flds = null;
     if(typeof(props.table) !== 'undefined'){
-        console.log(props.table.props.fields);
         flds = props.table.props.fields.map(
             (fld) => (
                 <div key={fld.field_name}

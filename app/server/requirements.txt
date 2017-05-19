@@ -1,0 +1,6 @@
+Django==1.11.1
+django-cors-headers==2.0.2
+mysql-connector-python==2.1.4
+PyMySQL==0.7.11
+pytz==2017.2
+whitenoise==3.3.0

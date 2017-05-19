@@ -14,18 +14,18 @@ html, body, div, nav {
 
 .app-logo.animated {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 40px;
 }
 
 .app-header {
   background-color: #222;
-  height: 100px;
+  height: 50px;
   padding: 20px;
   color: white;
 }
 
 .app-info {
-  height: 100px;  
+  height: 50px;  
   width: 30%;
   position: relative;
   float: right;
@@ -33,12 +33,10 @@ html, body, div, nav {
 
 .app-info.element{
   height: 100%;
-  line-height: 60px;
-  width: 40%;
+  line-height: 10px;
+  width: 50%;
   position: relative;
-  float: right;  
-  display: block;
-  margin: auto;
+  float: right;
 }
 .app-info.element #app-logo{
   height: 100%;
