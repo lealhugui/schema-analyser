@@ -7,12 +7,12 @@ import $ from 'jquery';
 /* Backend API URL */
 export const API_URL = window.location.hostname+":8000";
 
-export function removeLogoAnimation() {
+export const removeLogoAnimation = () => {
 	const logo = $("#app-logo");
-	setTimeout(() => logo.removeClass("animated"), 1000);	
+	setTimeout(() => logo.removeClass("animated"), 1000);
 }
 
-export function addLogoAnimation() {
+export const addLogoAnimation = () => {
 	const logo = $("#app-logo");
 	logo.addClass("animated");
 }

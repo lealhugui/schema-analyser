@@ -2,14 +2,17 @@ from django.db import models
 
 # Create your models here.
 
+
 class Schema(models.Model):
 
     schema_name = models.CharField(max_length=250)
 
+
 class Table(models.Model):
-    
+
     schema = models.ForeignKey('Schema', on_delete=models.CASCADE)
     table_name = models.CharField(max_length=250)
+
 
 class TableField(models.Model):
 
@@ -18,6 +21,7 @@ class TableField(models.Model):
     allow_null = models.BooleanField(default=False)
     inner_type = models.CharField(max_length=250, default="")
     is_primary_key = models.BooleanField(default=False)
+
 
 class ForeignKey(models.Model):
 

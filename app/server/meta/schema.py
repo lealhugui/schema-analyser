@@ -1,8 +1,10 @@
-#_*_ coding: utf-8 _*_
+# _*_ coding: utf-8 _*_
+
 
 SCHEMA_TYPES = (
     "MY_SQL",
 )
+
 
 def meta_factory():
     sub = tuple()
@@ -42,11 +44,11 @@ class Table(object):
             reffs += "{}".format(self.fk_refs[fk].name) if reffs == "" else ", {}".format(self.fk_refs[fk].name)
         fkss = ""
         for fk in self.fks:
-            fkss += "{}".format(self.fks[fk].name) if fkss == "" else ", {}".format(self.fks[fk].name)            
+            fkss += "{}".format(self.fks[fk].name) if fkss == "" else ", {}".format(self.fks[fk].name)
         return "{}.{}\n[{}]\n(fks:{})\n(refs:{})".format(self.db_schema, self.name, cols, fkss, reffs)
 
     def set_properties(self, dbschema_instance):
-        """Global setter for the properties. It should recieve an DBSchema instance and it will load the 
+        """Global setter for the properties. It should recieve an DBSchema instance and it will load the
         dicts containing colums, fks, and fk_refs"""
         if not issubclass(dbschema_instance.__class__, DBSchema):
             raise ValueError("dbschema_instance is not a valid DBSchema")
@@ -76,6 +78,7 @@ class Table(object):
         """Primary Keys of the table"""
         return self._pk
 
+
 class Column(object):
     """Database Table's column representation"""
 
@@ -83,20 +86,32 @@ class Column(object):
         pass
 
     def __init__(self, **kwargs):
+
+        self.name = None
+        self.column_type = None
+        self.allow_null = None
+
         if self._meta is not None:
             self._meta = meta_factory()
 
         if "name" in kwargs:
             self.name = kwargs.pop("name")
 
+        if "column_type" in kwargs:
+            self.column_type = kwargs.pop("column_type")
+
+        if "allow_null" in kwargs:
+            self.allow_null = kwargs.pop("allow_null")
+
         for k in kwargs:
             setattr(self._meta, k, kwargs[k])
+
 
 class ForeignKey(object):
 
     class _meta:
         pass
-    
+
     def __init__(self, **kwargs):
         if self._meta is not None:
             self._meta = meta_factory()
@@ -104,7 +119,8 @@ class ForeignKey(object):
             self.name = kwargs.pop("name")
 
         for k in kwargs:
-            setattr(self._meta, k, kwargs[k])        
+            setattr(self._meta, k, kwargs[k])
+
 
 class DBSchema(object):
     """Database Schema connector Abstract Class"""
@@ -144,7 +160,7 @@ class DBSchema(object):
     def _get_tables(self):
         """Abstract method for getting all the tables from the defined work schemas"""
         raise NotImplementedError()
-    
+
     def _get_table_columns(self, table_instance):
         """Abstract method for getting a list of table columns instance"""
         raise NotImplementedError()
@@ -152,7 +168,7 @@ class DBSchema(object):
     def _get_fks(self, table_instance):
         """Abstract method for getting all Foreign Keys on a table"""
         raise NotImplementedError()
-    
+
     def _get_refs(self, table_instance):
         """Abstract method for getting all Foreign Keys referencing a table"""
         raise NotImplementedError()
