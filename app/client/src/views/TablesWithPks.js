@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import JsonApiReq from '../Requests';
-import { 
-    API_URL, 
-    removeLogoAnimation, 
+import {
+    API_URL,
+    removeLogoAnimation,
     addLogoAnimation } from '../constants';
 import DynamicTable from '../DynamicTable';
 
@@ -46,8 +46,9 @@ class TablesWithPks extends Component{
             })
             .catch((err) => {
                 alert(err);
-            });
-            removeLogoAnimation();
+            })
+            .then(removeLogoAnimation);
+
     }
 
 
@@ -57,7 +58,7 @@ class TablesWithPks extends Component{
                 <span><h2>Tables And Primary Keys</h2></span>
                 <DynamicTable data={this.state.data} />
             </div>
-             
+
         )
     }
 }
