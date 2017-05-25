@@ -7,7 +7,7 @@ from .schema import DBSchema, Table, Column, ForeignKey
 
 class MySQLSchema(DBSchema):
 
-	def _init_conn(self, db_name, schemas=[]):
+	def _init_conn(self, db_dict, schemas=[]):
 		if self._meta.conn is not None:
 			try:
 				self._meta.conn.close()
@@ -17,10 +17,10 @@ class MySQLSchema(DBSchema):
 		self._meta.work_schemas = schemas
 
 		self._meta.conn = pymysql.connect(
-			user='root',
-			password='root',
-			host='127.0.0.1',
-			database=db_name,
+			user=db_dict["USER"],
+			password=db_dict["PASSWORD"],
+			host=db_dict["HOST"],
+			database=db_dict["NAME"],
 			cursorclass=pymysql.cursors.DictCursor
 		)
 

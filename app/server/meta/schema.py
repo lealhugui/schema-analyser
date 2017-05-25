@@ -149,7 +149,7 @@ class DBSchema(object):
             self._meta.tables = self._get_tables()
         return self._meta.tables
 
-    def _init_conn(self, db_name, schemas=[]):
+    def _init_conn(self, db_dict, schemas=[]):
         """Abstract method for initializing the connection"""
         raise NotImplementedError()
 
@@ -176,5 +176,3 @@ class DBSchema(object):
     def _get_pk(self, table_instance):
         """Abstract method for getting all Columns of the Table's PK"""
         raise NotImplementedError()
-
-

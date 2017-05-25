@@ -11,38 +11,44 @@ import './App.css';
 import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
 import TablesWithPks from './views/TablesWithPks';
-import JsonApiReq from './Requests';
+//import JsonApiReq from './Requests';
 import {
   API_URL,
   addLogoAnimation,
   removeLogoAnimation } from './constants';
 import createBrowserHistory from 'history/createBrowserHistory';
+import $ from 'jquery';
+
 
 /*
   Main app component and router
 */
+const customHistory = createBrowserHistory();
 const App = () => {
 
-  const handleClickRebuild = (e, history) => {
+  const buildCache = function(e, h){
     e.preventDefault();
+    const u = `http://${API_URL}/api/rebuild_db_map/`;
     addLogoAnimation();
-    new JsonApiReq(API_URL, "api/rebuild_db_map/").post()
-      .then((jsonData) => {
-         if("success" in jsonData){
-          if(jsonData.success===false){
-            throw jsonData.err;
+    $.ajax({
+      dataType: "json",
+      url: u,
+      success: (data) => {
+        if("success" in data){
+          if(data.success===false){
+           throw data.err;
           }
         }
-        history.push("/");
-      })
-      .catch((err) => {
-        alert(err);
-      })
-      .then(removeLogoAnimation);
-
+        alert("Cache rebuilt!");
+      },
+      error: (e) => {
+        console.log(e);
+        alert(`${e.toString()}`);
+      },
+      complete: removeLogoAnimation
+    })
   }
 
-  const customHistory = createBrowserHistory();
   return (
     <Router history={customHistory}>
 
@@ -59,9 +65,7 @@ const App = () => {
                 <ul>
                   <li><Link to='/'>HOME</Link></li>
                   <li><Link to='/pks'>PK LIST</Link></li>
-                  <li><a href="" onClick={(e) => {
-                    handleClickRebuild(e, history)
-                  }} >REBUILD CACHE</a></li>
+                  <li><a href="" onClick={buildCache} >REBUILD CACHE</a></li>
                 </ul>
 
               </nav>
