@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { SchemaCard } from './Cards';
 import JsonApiReq from '../Requests';
-import { API_URL } from '../constants';
+import {
+  API_URL,
+  addLogoAnimation,
+  removeLogoAnimation } from '../constants';
 
 class SchemaContainer extends Component{
 
@@ -13,6 +16,7 @@ class SchemaContainer extends Component{
 
   getCache() {
     let uri = API_URL;
+    addLogoAnimation();
     new JsonApiReq(uri, 'api/db_map_view/').get()
       .then((jsonData) => {
         if('success' in jsonData){
@@ -24,7 +28,8 @@ class SchemaContainer extends Component{
       })
       .catch((err) => {
         alert(err);
-      });
+      })
+      .then(removeLogoAnimation);
   }
 
   componentDidMount(){

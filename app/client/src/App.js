@@ -12,7 +12,7 @@ import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
 import TablesWithPks from './views/TablesWithPks';
 import JsonApiReq from './Requests';
-import { 
+import {
   API_URL,
   addLogoAnimation,
   removeLogoAnimation } from './constants';
@@ -22,7 +22,7 @@ import createBrowserHistory from 'history/createBrowserHistory';
   Main app component and router
 */
 const App = () => {
-  
+
   const handleClickRebuild = (e, history) => {
     e.preventDefault();
     addLogoAnimation();
@@ -37,15 +37,15 @@ const App = () => {
       })
       .catch((err) => {
         alert(err);
-      });
-      removeLogoAnimation();
+      })
+      .then(removeLogoAnimation);
 
   }
 
   const customHistory = createBrowserHistory();
   return (
     <Router history={customHistory}>
-      <Route render={({ match, location, history }) => (
+
         <div className="app">
           <div className="app-header">
             <div className="app-info">
@@ -63,7 +63,7 @@ const App = () => {
                     handleClickRebuild(e, history)
                   }} >REBUILD CACHE</a></li>
                 </ul>
-                
+
               </nav>
             </span>
             <div className="app-content">
@@ -83,10 +83,9 @@ const App = () => {
             </div>
           </div>
 
-            
-      
+
+
         </div>
-      )} />
     </Router>
   );
 }
