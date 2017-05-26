@@ -69,8 +69,8 @@ def rebuild_db_map(request):
 
     CACHE = None
     try:
-        schemas = ["world"]
-        with get_schema_instance("MY_SQL", schemas) as s:
+        schemas = ['SIS_OS_ERPCL_DESENV', ]
+        with get_schema_instance("MSSQL", schemas) as s:
             CACHE = s.tables
 
         mdl.Schema.objects.all().delete()

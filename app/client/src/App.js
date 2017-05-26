@@ -15,7 +15,8 @@ import TablesWithPks from './views/TablesWithPks';
 import {
   API_URL,
   addLogoAnimation,
-  removeLogoAnimation } from './constants';
+  removeLogoAnimation,
+  handleErr } from './constants';
 import createBrowserHistory from 'history/createBrowserHistory';
 import $ from 'jquery';
 
@@ -36,14 +37,15 @@ const App = () => {
       success: (data) => {
         if("success" in data){
           if(data.success===false){
-           throw data.err;
+           handleErr(data.err);
+           return;
           }
         }
         alert("Cache rebuilt!");
       },
       error: (e) => {
         console.log(e);
-        alert(`${e.toString()}`);
+        alert(`${e}`);
       },
       complete: removeLogoAnimation
     })

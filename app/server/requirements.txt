@@ -4,3 +4,4 @@ mysql-connector-python==2.1.4
 PyMySQL==0.7.11
 pytz==2017.2
 whitenoise==3.3.0
+pymssql==2.1.3

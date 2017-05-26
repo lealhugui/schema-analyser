@@ -1,9 +1,13 @@
-#_*_ coding: utf-8 _*_
+# _*_ coding: utf-8 _*_
+
+import os
+import dj_database_url
 
 from .schema import SCHEMA_TYPES
 from .mysql import MySQLSchema
+from .mssql import MSSqlSchema
 
-import dj_database_url
+
 def get_schema_instance(db_type, schemas=[]):
     """Factory of the DB_INSTANCE which will be used for DB introspection.
     Based on the db_type, the given env variable will be parsed as a
@@ -20,6 +24,13 @@ def get_schema_instance(db_type, schemas=[]):
     if db_type not in SCHEMA_TYPES:
         raise Exception("Unknow schema type")
 
+    env_var = "{}_DATABASE_URL".format(db_type.replace("_", ""))
+    if env_var not in os.environ:
+        raise Exception("No env variable {}".format(env_var))
+
+    cfg = dj_database_url.config(env=env_var)
+
     if db_type == "MY_SQL":
-        cfg = dj_database_url.config(env='MYSQL_DATABASE_URL')
         return MySQLSchema(cfg, schemas)
+    elif db_type == "MSSQL":
+        return MSSqlSchema(cfg)

@@ -16,3 +16,8 @@ export const addLogoAnimation = () => {
 	const logo = $("#app-logo");
 	logo.addClass("animated");
 }
+
+export const handleErr = (err) => {
+	console.error(err);
+	alert(err);
+}

@@ -6,6 +6,7 @@ from .schema import DBSchema, Table, Column, ForeignKey
 
 
 class MySQLSchema(DBSchema):
+	"""Introspection class for MySQL Database"""
 
 	def _init_conn(self, db_dict, schemas=[]):
 		if self._meta.conn is not None:

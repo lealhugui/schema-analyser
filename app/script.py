@@ -1,27 +1,20 @@
-#_*_ coding: utf-8 _*_
+# _*_ coding: utf-8 _*_
 
-from meta import get_schema_instance
-
-CACHE = None
+from server.meta import get_schema_instance
+import json
 
 def main():
-    """Main script mode function"""
+	"""Main script mode function"""
+	l = list()
+	CACHE = None
+	with get_schema_instance("MSSQL", ['SIS_OS_ERPCL_DESENV', ]) as s:
+		CACHE = s.tables
+	for t in CACHE:
+		l.append(t.__dict__)
 
-    db = "world"
-    schemas = ["world"]
-    with get_schema_instance("MY_SQL", db, schemas) as s:
-        CACHE = s.tables
-    for t in CACHE:
-        print(CACHE[t])
-        print("\n")
+	with open('dump.json', 'r') as j:
+		j.write(json.dumps(l))
 
-
-
-#if __name__ != "__main__":
-#    raise Exception("Script mode should not be imported!")
-#else:
-#    main()
 
 if __name__ == "__main__":
-    main()
-    
+	main()
