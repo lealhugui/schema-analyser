@@ -1,6 +1,6 @@
 # _*_ coding: utf-8 _*_
 
-# TODO: there is a TOP X in the queries, just for the testing
+# TODO: there is a TOP X in the main query, just for the testing
 
 import pymssql
 from .schema import DBSchema, Table, Column, ForeignKey
@@ -35,7 +35,7 @@ class MSSqlSchema(DBSchema):
 
 	def _get_tables(self):
 
-		qry = "select top 50 * from information_schema.tables where TABLE_TYPE != 'VIEW' "
+		qry = "select TOP 50 TABLE_NAME, TABLE_CATALOG from information_schema.tables where TABLE_TYPE != 'VIEW' "
 		if len(self._meta.work_schemas) > 0:
 			schemas = ""
 			for scm in self._meta.work_schemas:
@@ -54,11 +54,14 @@ class MSSqlSchema(DBSchema):
 				table_inst.set_properties(self)
 				result[table_inst.name] = table_inst
 
+			# for k in result:
+			# 	result[k].set_properties(self)
+
 		return result
 
 	def _get_table_columns(self, table_instance):
 		qry = "" \
-			"select TOP 30 * from information_schema.columns " \
+			"select COLUMN_NAME, DATA_TYPE, IS_NULLABLE from information_schema.columns " \
 			"where TABLE_CATALOG='{}' and table_name='{}'".format(
 				table_instance.db_schema,
 				table_instance.name
@@ -80,7 +83,7 @@ class MSSqlSchema(DBSchema):
 
 	def _get_fks(self, table_instance):
 		qry = "" \
-			" SELECT TOP 30  O.NAME AS CONSTRAINT_NAME      " \
+			" SELECT O.NAME AS CONSTRAINT_NAME      " \
 			" FROM 											" \
 			" 	SYS.FOREIGN_KEY_COLUMNS AS FK				" \
 			" 	INNER JOIN SYS.OBJECTS O ON O.OBJECT_ID = 	" \
@@ -104,7 +107,7 @@ class MSSqlSchema(DBSchema):
 
 	def _get_refs(self, table_instance):
 		qry = "" \
-			" SELECT TOP 30  O.NAME AS CONSTRAINT_NAME      " \
+			" SELECT O.NAME AS CONSTRAINT_NAME      " \
 			" FROM 											" \
 			" 	SYS.FOREIGN_KEY_COLUMNS AS FK				" \
 			" 	INNER JOIN SYS.OBJECTS O ON O.OBJECT_ID = 	" \
@@ -127,21 +130,20 @@ class MSSqlSchema(DBSchema):
 		return result
 
 	def _get_pk(self, table_instance):
+		colmns = ", ".join(["'{}'".format(k) for k in table_instance.columns])
 		qry = "" \
-			" SELECT TOP 30  c.* FROM information_schema.table_constraints t  " \
+			" SELECT k.COLUMN_NAME FROM information_schema.table_constraints t  " \
 			" INNER JOIN information_schema.key_column_usage k  	  " \
 			" ON k.constraint_name=t.constraint_name and			  " \
 			"	k.TABLE_CATALOG=t.TABLE_CATALOG and 				  " \
 			"	k.table_name=t.table_name							  " \
-			" INNER JOIN information_schema.columns c  				  " \
-			" ON k.TABLE_CATALOG=c.TABLE_CATALOG and				  " \
-			"	k.table_name=c.table_name and						  " \
-			"	k.column_name=c.column_name							  " \
 			" WHERE t.constraint_type='PRIMARY KEY'  				  " \
-			" AND t.TABLE_CATALOG='{}'  							  " \
-			" AND t.table_name='{}'									  ".format(
+			" AND k.TABLE_CATALOG='{}'  							  " \
+			" AND k.table_name='{}'									  " \
+			" AND k.COLUMN_NAME IN ({}) 							  ".format(
 				table_instance.db_schema,
-				table_instance.name
+				table_instance.name,
+				colmns
 			)
 		with self._meta.conn.cursor(as_dict=True) as crs:
 			crs.execute(qry)

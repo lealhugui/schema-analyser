@@ -2,7 +2,7 @@
 
 
 SCHEMA_TYPES = (
-    "MY_SQL",
+    "MYSQL",
     "MSSQL",
 )
 

@@ -30,7 +30,7 @@ def get_schema_instance(db_type, schemas=[]):
 
     cfg = dj_database_url.config(env=env_var)
 
-    if db_type == "MY_SQL":
+    if db_type == "MYSQL":
         return MySQLSchema(cfg, schemas)
     elif db_type == "MSSQL":
         return MSSqlSchema(cfg)
