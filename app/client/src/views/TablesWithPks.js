@@ -33,7 +33,10 @@ class TablesWithPks extends Component{
                 for(let i=0; i<jsonData.length; i++){
                     thisData.push({
                         "Table Name": jsonData[i]["Table Name"].toUpperCase(),
-                        "Primary Keys": jsonData[i]["Primary Keys"],
+                        "Primary Keys": (
+                            jsonData[i]["Primary Keys"] ? 
+                                jsonData[i]["Primary Keys"] : 
+                                "--[NO PK]--"),
                         "_opt": {
                             links: [{
                                 to: "/table/"+jsonData[i]["Table Name"],

@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- *  @description: Dynamic simple table generator.  Recieves a JSON object list as parameter, and renders the objects as a html table.
- *  @param=data: The JSON array of objects. The component extpect the objects to have the same structure,
+ * @description: Dynamic simple table generator.  Recieves a JSON object list as parameter, and renders the objects as a html table.
+ * @param data: The JSON array of objects. The component extpect the objects to have the same structure,
  *  so it uses the first object as "template" to render the others objects. The object can contain a propery
  *  named "_opt", wich should be an object, with the following properties:
  *
@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
  *          to: the href to follow
  *          columnName: the column to wrap
  *  
- *  @example
+ * @example
  *  ----
  *  [
  *      {
@@ -40,7 +40,8 @@ import { Link } from 'react-router-dom';
  *
  *   With this data, will be rendered a table with 2 columns, with the headers "Header 1" and "Header 2", with 2 rows, 
  *   and the first column of each row will be a link.
- *  @param styles: object with the reactjs styles. 
+ * @param tbl_classes: string with the classes of the table
+ * @param tlb_styles: object with the reactjs styles. 
  */
 export default (props) => {
     const d = props.data || [];
