@@ -1,4 +1,7 @@
 /* generic CSS */
+* { 
+  box-sizing: border-box;
+}
 
 html, body, div, nav {
   width: 100%;
@@ -19,7 +22,7 @@ html, body, div, nav {
 
 .app-header {
   background-color: #222;
-  height: 50px;
+  height: 100px;
   padding: 20px;
   color: white;
 }
@@ -135,6 +138,7 @@ nav.navbar ul {
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  width: 100%;
 }
 
 nav.navbar li {
