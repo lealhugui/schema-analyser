@@ -4,9 +4,6 @@ import os
 import dj_database_url
 
 from .schema import SCHEMA_TYPES
-from .mysql import MySQLSchema
-from .mssql import MSSqlSchema
-
 
 def get_schema_instance(db_type, schemas=[]):
     """Factory of the DB_INSTANCE which will be used for DB introspection.
@@ -31,6 +28,8 @@ def get_schema_instance(db_type, schemas=[]):
     cfg = dj_database_url.config(env=env_var)
 
     if db_type == "MYSQL":
+        from .mysql import MySQLSchema
         return MySQLSchema(cfg, schemas)
     elif db_type == "MSSQL":
+        from .mssql import MSSqlSchema
         return MSSqlSchema(cfg)
