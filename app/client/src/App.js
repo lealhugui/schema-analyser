@@ -79,11 +79,11 @@ const App = () => {
               transitionAppearTimeout={500}
               transitionEnterTimeout={500}
               transitionLeaveTimeout={300}>
-                <Switch key={location.key}>
-                  <Route location={location} exact path="/" component={SchemaContainer}/>
-                  <Route location={location} path='/schemas' component={SchemaContainer} />
-                  <Route location={location} path='/table/:name' component={TableInfo} />
-                  <Route location={location} path='/pks' component={TablesWithPks} />
+                <Switch key={window.location.key}>
+                  <Route location={window.location} exact path="/" component={SchemaContainer}/>
+                  <Route location={window.location} path='/schemas' component={SchemaContainer} />
+                  <Route location={window.location} path='/table/:name' component={TableInfo} />
+                  <Route location={window.location} path='/pks' component={TablesWithPks} />
                 </Switch>
               </CSSTransitionGroup>
             </div>
