@@ -16,29 +16,27 @@ html, body, div, nav {
 }
 
 .app-logo.animated {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40px;
+  animation: App-logo-spin 2s linear;
 }
 
 .app-header {
   background-color: #222;
-  height: 100px;
   padding: 20px;
   color: white;
 }
 
 .app-info {
-  height: 50px;  
-  width: 30%;
+  
+  
   position: relative;
-  float: right;
+  
 }
 
 .app-info.element{
-  line-height: 10px;
-  width: 50%;
+  
+  
   position: relative;
-  float: right;
+  
 }
 .app-info.element #app-logo{
   width: 30%;
