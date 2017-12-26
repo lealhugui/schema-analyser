@@ -85,9 +85,7 @@ html, body, div, nav {
 table.dyn-tbl {
   width: 90%;
   height: 100%;
-  margin-top: 5px;
-  margin-left: 20px;  
-  margin-right: auto;
+  margin: 0 auto;
   border-collapse: collapse;
   border: 1px solid black;
 }
