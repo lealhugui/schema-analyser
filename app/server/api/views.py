@@ -69,6 +69,7 @@ def rebuild_db_map(request):
 
     CACHE = None
     try:
+        # TODO: expose the 2 next lines to app parameters
         schemas = ['employees', ]
         with get_schema_instance("MYSQL", schemas) as s:
             CACHE = s.tables
