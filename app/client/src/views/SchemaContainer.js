@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { SchemaCard } from './Cards';
 import JsonApiReq from '../Requests';
-import {
-  API_URL,
-  addLogoAnimation,
-  removeLogoAnimation } from '../constants';
+import { API_URL, addLogoAnimation, removeLogoAnimation } from '../constants';
 
 class SchemaContainer extends Component{
 

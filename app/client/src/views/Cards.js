@@ -24,11 +24,13 @@ export const TableCard = (props) => {
     }
 
     return (
-        <div className="table-card" title={props.table.table_name}>
-            <b>{props.table.table_name.toUpperCase()}</b>
-            <span className="obj-identifier"><Link to={'/table/'+ props.table.table_name}>[obj]</Link></span>
-            <div style={listWrapperStyles}>{flds}</div>
-        </div>
+        <article class="table-card-outer">
+            <div className="table-card" title={props.table.table_name}>
+                <b>{props.table.table_name.toUpperCase()}</b>
+                <span className="obj-identifier"><Link to={'/table/'+ props.table.table_name}>[obj]</Link></span>
+                <div style={listWrapperStyles}>{flds}</div>
+            </div>
+        </article>
     );
 }
 
