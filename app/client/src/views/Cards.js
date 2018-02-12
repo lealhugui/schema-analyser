@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './Cards.css';
 
 export const TableCard = (props) => {
+    console.log(props, 'props');
     let listWrapperStyles = {
         marginTop: '5px'
     }
@@ -29,8 +30,8 @@ export const TableCard = (props) => {
                 <p className="text-overflow">{props.table.table_name.toUpperCase()}</p>
                 <small style={listWrapperStyles}>{flds}</small>
                 <div className="bottom-bar">
-                    <button className="obj-identifier" href="{'/table/'+ props.table.table_name}">
-                    <Link to={'/table/'+ props.table.table_name} style={{color: '#333'}} >[+]</Link></button>
+                    <a className="obj-identifier" href="{'/table/'+ props.table.table_name}">
+                    <Link to={'/table/'+ props.table.table_name} style={{color: '#333'}} >[+]</Link></a>
                 </div>
 
             </div>
