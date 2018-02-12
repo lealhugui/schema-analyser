@@ -61,11 +61,11 @@ html, body, div, nav {
   transition: opacity 500ms ease;
 }
 
-.rTransition-leave {
+.rTransition-exit {
   opacity: 1;
 }
 
-.rTransition-leave.rTransition-leave-active {
+.rTransition-exit.rTransition-exit-active {
   opacity: 0.01;
   transition: opacity 300ms ease;
 }

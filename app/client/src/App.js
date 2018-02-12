@@ -1,5 +1,5 @@
 import React from 'react';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
   BrowserRouter as Router,
   Route,
@@ -73,8 +73,8 @@ const App = () => {
               </nav>
             </span>
             <div className="app-content">
-              <CSSTransitionGroup style={{height: '100%'}}
-              transitionName="rTransition"
+              <TransitionGroup style={{height: '100%'}}
+              classNames="rTransition"
               transitionAppear={true}
               transitionAppearTimeout={500}
               transitionEnterTimeout={500}
@@ -85,7 +85,7 @@ const App = () => {
                   <Route location={window.location} path='/table/:name' component={TableInfo} />
                   <Route location={window.location} path='/pks' component={TablesWithPks} />
                 </Switch>
-              </CSSTransitionGroup>
+              </TransitionGroup>
             </div>
           </div>
 
