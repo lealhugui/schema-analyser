@@ -1,7 +1,7 @@
 import React from 'react';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch,
   Link
@@ -57,7 +57,7 @@ const App = () => {
         <div className="app">
           <div className="app-header">
             <div className="app-info">
-              <div className="app-info element"><img id="app-logo" src={logo} className="app-logo" alt="logo" /></div>
+              <div className="app-info element"><img id="app-logo" src={logo} className="rotating app-logo" alt="logo" /></div>
               <div className="app-info element"><h2 style={{height:"100%"}}>schema-analyser</h2></div>
             </div>
           </div>
@@ -74,11 +74,9 @@ const App = () => {
             </span>
             <div className="app-content">
               <TransitionGroup style={{height: '100%'}}
-              classNames="rTransition"
-              transitionAppear={true}
-              transitionAppearTimeout={500}
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={300}>
+              className="rTransition"
+              appear={true}
+              timeout={500}>
                 <Switch key={window.location.key}>
                   <Route location={window.location} exact path="/" component={SchemaContainer}/>
                   <Route location={window.location} path='/schemas' component={SchemaContainer} />
