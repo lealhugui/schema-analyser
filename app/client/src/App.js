@@ -6,7 +6,7 @@ import {
   Switch,
   Link
 } from 'react-router-dom';
-import logo from './logo.svg';
+import logo from './molecule.svg';
 import './App.css';
 import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
