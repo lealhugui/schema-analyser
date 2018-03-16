@@ -7,6 +7,16 @@ html, body, div, nav {
   width: 100%;
 }
 
+p {
+  margin: 6px;
+}
+
+.text-overflow {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+  
 .app {
   text-align: center;
 }
