@@ -70,8 +70,8 @@ def rebuild_db_map(request):
     CACHE = None
     try:
         # TODO: expose the 2 next lines to app parameters
-        schemas = ['employees', ]
-        with get_schema_instance("MYSQL", schemas) as s:
+        schemas = ['pdv-va', ]
+        with get_schema_instance("PGSQL", schemas) as s:
             CACHE = s.tables
 
         mdl.Schema.objects.all().delete()

@@ -1,7 +1,8 @@
-Django==1.11.1
-django-cors-headers==2.0.2
+Django==2.0.2
+django-cors-headers==2.2.0
 PyMySQL==0.7.11
 pytz==2017.2
 whitenoise==3.3.0
 #pymssql==2.1.3
 dj_database_url
+psycopg2

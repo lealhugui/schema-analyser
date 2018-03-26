@@ -4,6 +4,7 @@
 SCHEMA_TYPES = (
     "MYSQL",
     "MSSQL",
+    "PGSQL",
 )
 
 
