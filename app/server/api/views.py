@@ -1,3 +1,4 @@
+import traceback
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 import api.models as mdl
@@ -32,7 +33,11 @@ def db_map_view(request):
             result.append(r)
         return JsonResponse(result, safe=False)
     except Exception as e:
-        return JsonResponse({'success': False, 'err': str(e)})
+        return JsonResponse({
+            'success': False,
+            'err': str(e),
+            'errStack': traceback.format_exc()
+        })
 
 
 def table_info(request, name=None):
@@ -61,7 +66,11 @@ def table_info(request, name=None):
 
         return JsonResponse(this_tbl, safe=False)
     except Exception as e:
-        return JsonResponse({'success': False, 'err': str(e)})
+        return JsonResponse({
+            'success': False,
+            'err': str(e),
+            'errStack': traceback.format_exc()
+        })
 
 
 def rebuild_db_map(request):
@@ -70,7 +79,7 @@ def rebuild_db_map(request):
     CACHE = None
     try:
         # TODO: expose the 2 next lines to app parameters
-        schemas = ['pdv-va', ]
+        schemas = ('pdv-va', )
         with get_schema_instance("PGSQL", schemas) as s:
             CACHE = s.tables
 
@@ -98,7 +107,12 @@ def rebuild_db_map(request):
 
         return JsonResponse({'success': True})
     except Exception as e:
-        return JsonResponse({'success': False, 'err': str(e)})
+        print(traceback.format_exc())
+        return JsonResponse({
+            'success': False,
+            'errTrace': traceback.format_exc(),
+            'err': str(e)            
+        })
 
 
 def tables_with_pks(request):
@@ -118,4 +132,8 @@ def tables_with_pks(request):
                 result.append(t)
         return JsonResponse(result, safe=False)
     except Exception as e:
-        return JsonResponse({'success': False, 'err': str(e)})
+        return JsonResponse({
+            'success': False,
+            'err': str(e),
+            'errTrace': traceback.format_exc()
+        })

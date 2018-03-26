@@ -37,7 +37,7 @@ const App = () => {
       success: (data) => {
         if("success" in data){
           if(data.success===false){
-           handleErr(data.err);
+           handleErr(data);
            return;
           }
         }

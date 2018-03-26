@@ -5,7 +5,7 @@ import dj_database_url
 
 from .schema import SCHEMA_TYPES
 
-def get_schema_instance(db_type, schemas=[]):
+def get_schema_instance(db_type, schemas=()):
     """Factory of the DB_INSTANCE which will be used for DB introspection.
     Based on the db_type, the given env variable will be parsed as a
     '12 factor' database URL, and will be used as parameters for the DB
@@ -33,3 +33,6 @@ def get_schema_instance(db_type, schemas=[]):
     elif db_type == "MSSQL":
         from .mssql import MSSqlSchema
         return MSSqlSchema(cfg)
+    elif db_type == "PGSQL":
+        from .pg import PGSchema
+        return PGSchema(cfg, schemas)

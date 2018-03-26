@@ -1,15 +1,16 @@
 # _*_ coding: utf-8 _*_
 
-# cursor_factory=psycopg2.extras.DictCursor
+# 
 import psycopg2
+from  psycopg2.extras import DictCursor
 from .schema import DBSchema, Table, Column, ForeignKey
 
 
-class MSSqlSchema(DBSchema):
-    """Introspection Schema for PostgreSQL Database"""
+class PGSchema(DBSchema):
+	"""Introspection Schema for PostgreSQL Database"""
 
-    def _init_conn(self, db_dict, schemas=[]):
-        if self._meta.conn is not None:
+	def _init_conn(self, db_dict, schemas=[]):
+		if self._meta.conn is not None:
 			try:
 				self._meta.conn.close()
 			except Exception:
@@ -21,10 +22,11 @@ class MSSqlSchema(DBSchema):
 			user=db_dict["USER"],
 			password=db_dict["PASSWORD"],
 			host=db_dict["HOST"],
-			database=db_dict["NAME"]
+			database=db_dict["NAME"],
+			cursor_factory=DictCursor
 		)
 
-    def _close_conn(self):
+	def _close_conn(self):
 		if self._meta.conn is not None:
 			try:
 				self._meta.conn.close()
@@ -43,11 +45,12 @@ class MSSqlSchema(DBSchema):
 		with self._meta.conn.cursor() as crs:
 			crs.execute(qry)
 			tbls = crs.fetchall()
-
-			for tbl in tbls:
+			
+			for tbl in tbls:				
+				tbl = dict(tbl)				
 				table_inst = Table(
-					name=tbl.pop("TABLE_NAME"),
-					db_schema=tbl.pop("TABLE_SCHEMA"),
+					name=tbl.pop("table_name", None),
+					db_schema=tbl.pop("table_schema", None),
 					**tbl)
 				table_inst.set_properties(self)
 				result[table_inst.name] = table_inst
@@ -66,11 +69,11 @@ class MSSqlSchema(DBSchema):
 			colmns = crs.fetchall()
 			result = dict()
 			for clm in colmns:
-
+				clm = dict(clm)
 				clm_inst = Column(
-					name=clm.pop("COLUMN_NAME"),
-					column_type=clm.pop("DATA_TYPE"),
-					allow_null=clm.pop("IS_NULLABLE") == "YES",
+					name=clm.pop("column_name"),
+					column_type=clm.pop("data_type"),
+					allow_null=clm.pop("is_nullable") == "YES",
 					**clm
 				)
 				result[clm_inst.name] = clm_inst
@@ -79,10 +82,10 @@ class MSSqlSchema(DBSchema):
 	def _get_fks(self, table_instance):
 		qry = "" \
 			"SELECT tc.constraint_name " \
-            " FROM information_schema.table_constraints AS tc " \
-            " JOIN information_schema.key_column_usage AS kcu " \
-            "   ON tc.constraint_name = kcu.constraint_name " \
-			" WHERE constraint_type = 'FOREIGN KEY' AND TABLE_SCHEMA = '{}' AND TABLE_NAME = '{}' ".format(
+			" FROM information_schema.table_constraints AS tc " \
+			" JOIN information_schema.key_column_usage AS kcu " \
+			"   ON tc.constraint_name = kcu.constraint_name " \
+			" WHERE constraint_type = 'FOREIGN KEY' AND tc.TABLE_SCHEMA = '{}' AND tc.TABLE_NAME = '{}' ".format(
 				table_instance.db_schema,
 				table_instance.name
 			)
@@ -92,19 +95,20 @@ class MSSqlSchema(DBSchema):
 			foreign_keys = crs.fetchall()
 			result = dict()
 			for fkey in foreign_keys:
-				fk_inst = ForeignKey(name=fkey.pop("CONSTRAINT_NAME"), **fkey)
+				fkey = dict(fkey)
+				fk_inst = ForeignKey(name=fkey.pop("constraint_name"), **fkey)
 				result[fk_inst.name] = fk_inst
 		return result
 
-    def _get_refs(self, table_instance):
+	def _get_refs(self, table_instance):
 		qry = "" \
 			" SELECT tc.constraint_name " \
-            " FROM information_schema.table_constraints tc " \
-            " JOIN information_schema.key_column_usage kcu ON tc.constraint_name = kcu.constraint_name " \
-            " JOIN information_schema.constraint_column_usage ccu ON ccu.constraint_name = tc.constraint_name " \
-            " WHERE constraint_type = 'FOREIGN KEY' " \
-            " AND ccu.table_schema='{}' " \
-            " AND ccu.table_name='{}' ".format(
+			" FROM information_schema.table_constraints tc " \
+			" JOIN information_schema.key_column_usage kcu ON tc.constraint_name = kcu.constraint_name " \
+			" JOIN information_schema.constraint_column_usage ccu ON ccu.constraint_name = tc.constraint_name " \
+			" WHERE constraint_type = 'FOREIGN KEY' " \
+			" AND ccu.table_schema='{}' " \
+			" AND ccu.table_name='{}' ".format(
 				table_instance.db_schema,
 				table_instance.name
 			)
@@ -114,30 +118,33 @@ class MSSqlSchema(DBSchema):
 			foreign_keys = crs.fetchall()
 			result = dict()
 			for fkey in foreign_keys:
-				fk_inst = ForeignKey(name=fkey.pop("CONSTRAINT_NAME"), **fkey)
+				fkey = dict(fkey)
+				fk_inst = ForeignKey(name=fkey.pop("constraint_name"), **fkey)
 				result[fk_inst.name] = fk_inst
 		return result
 
-    def _get_pk(self, table_instance):
+	def _get_pk(self, table_instance):
+		
 		colmns = ", ".join(["'{}'".format(k) for k in table_instance.columns])
 		qry = "" \
 			" SELECT a.attname as COLUMN_NAME " \
-            " FROM   pg_index i " \
-            " JOIN   pg_attribute a ON a.attrelid = i.indrelid " \
-            "                      AND a.attnum = ANY(i.indkey) " \
-            " WHERE  i.indrelid = '{}.{}'::regclass " \
-            " AND    i.indisprimary "
-            " AND   a.attname IN ({}) "
-            .format(
+			" FROM   pg_index i " \
+			" JOIN   pg_attribute a ON a.attrelid = i.indrelid " \
+			"					  AND a.attnum = ANY(i.indkey) " \
+			" WHERE  i.indrelid = '{}.{}'::regclass " \
+			" AND	i.indisprimary " \
+			" AND   a.attname IN ({}) ".format(
 				table_instance.db_schema,
 				table_instance.name,
 				colmns
 			)
+		
 		with self._meta.conn.cursor() as crs:
 			crs.execute(qry)
 			colmns = crs.fetchall()
 			result = dict()
 			for clm in colmns:
-				clm_inst = Column(name=clm.pop("COLUMN_NAME"), **clm)
+				clm = dict(clm)
+				clm_inst = Column(name=clm.pop("column_name"), **clm)
 				result[clm_inst.name] = clm_inst
 		return result

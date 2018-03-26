@@ -19,5 +19,9 @@ export const addLogoAnimation = () => {
 
 export const handleErr = (err) => {
 	console.error(err);
-	alert(err);
+	if ("err" in err) {
+		alert(err.err);
+	} else {
+		alert(err);
+	}
 }
