@@ -14,6 +14,10 @@
     overflow: auto;
 } 
 
+.table-card-outer:nth-of-type(odd) {
+    float: right;
+}
+
 .table-card {
     width: 100%;    
     padding: 8px 8px 32px 8px;
