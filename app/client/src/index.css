@@ -1,5 +1,19 @@
-body, div{
+body,
+div {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+@-webkit-keyframes rotating {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.rotating {
+  -webkit-animation: rotating 7s linear infinite;
 }
