@@ -41,7 +41,7 @@ def db_map_view(request):
         })
 
 
-def table_info(request, name=None):
+def table_info(request, name=None, get_table_size=False):
     """Return the metadata of the requested table"""
 
     try:
@@ -65,6 +65,15 @@ def table_info(request, name=None):
         this_tbl = model_to_dict(t)
         this_tbl["props"] = t_props
 
+        if get_table_size:
+            schemas = getattr(settings, "META_DB_SCHEMAS", None)
+            if not schemas:
+                raise Exception('Schemas not configured')
+            
+            with get_schema_instance(schemas) as s:
+                this_tbl["props"]["table_size"] = s.get_table_info(schemas[0], name).get_table_size(s)
+
+
         return JsonResponse(this_tbl, safe=False)
     except Exception as e:
         return JsonResponse({
@@ -80,7 +89,6 @@ def rebuild_db_map(request):
     CACHE = None
     try:
         schemas = getattr(settings, "META_DB_SCHEMAS", None)
-        print(schemas)
         if not schemas:
             raise Exception('Schemas not configured')
         with get_schema_instance(schemas) as s:
@@ -90,11 +98,11 @@ def rebuild_db_map(request):
         log_d = dict()
         for scm in schemas:
             s = mdl.Schema.objects.create(schema_name=scm)
-            # s.save()
-            # s.refresh_from_db()
 
             for tbl in [CACHE[t] for t in CACHE if CACHE[t].db_schema == scm]:
-
+                # I don't bother saving table disk usage in the DB because it changes so
+                # often that almost every query on it would be outdated. Insted, in the
+                # "/table_info" endpoint there is a parameter to return it
                 t = mdl.Table.objects.create(schema=s, table_name=tbl.name)
                 for clm in tbl.columns:
                     mdl.TableField.objects.create(
