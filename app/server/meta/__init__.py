@@ -5,7 +5,7 @@ import dj_database_url
 
 from .schema import SCHEMA_TYPES
 
-def get_schema_instance(db_type, schemas=()):
+def get_schema_instance(schemas=()):
     """Factory of the DB_INSTANCE which will be used for DB introspection.
     Based on the db_type, the given env variable will be parsed as a
     '12 factor' database URL, and will be used as parameters for the DB
@@ -17,15 +17,22 @@ def get_schema_instance(db_type, schemas=()):
 
     More on these standards, on "https://github.com/kennethreitz/dj-database-url"
     """
+
+    if "SA_ENGINE" not in os.environ:
+        raise Exception("Engine not configured")
+
+    db_type = os.environ["SA_ENGINE"]
+
     cfg = None
     if db_type not in SCHEMA_TYPES:
         raise Exception("Unknow schema type")
 
-    env_var = "{}_DATABASE_URL".format(db_type.replace("_", ""))
+    env_var = "SA_DATABASE_URL"
     if env_var not in os.environ:
         raise Exception("No env variable {}".format(env_var))
 
     cfg = dj_database_url.config(env=env_var)
+    print(cfg)
 
     if db_type == "MYSQL":
         from .mysql import MySQLSchema

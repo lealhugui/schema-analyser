@@ -1,6 +1,7 @@
 import traceback
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
+from django.conf import settings
 import api.models as mdl
 from meta import get_schema_instance
 
@@ -78,9 +79,11 @@ def rebuild_db_map(request):
 
     CACHE = None
     try:
-        # TODO: expose the 2 next lines to app parameters
-        schemas = ('pdv-va', )
-        with get_schema_instance("PGSQL", schemas) as s:
+        schemas = getattr(settings, "META_DB_SCHEMAS", None)
+        print(schemas)
+        if not schemas:
+            raise Exception('Schemas not configured')
+        with get_schema_instance(schemas) as s:
             CACHE = s.tables
 
         mdl.Schema.objects.all().delete()
