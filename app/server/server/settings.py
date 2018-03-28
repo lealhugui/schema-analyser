@@ -142,3 +142,5 @@ LOGGING = {
         },
     },
 }
+
+META_DB_SCHEMAS = ('pdv-va', )

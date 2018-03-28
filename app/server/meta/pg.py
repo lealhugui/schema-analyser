@@ -3,7 +3,7 @@
 # 
 import psycopg2
 from  psycopg2.extras import DictCursor
-from .schema import DBSchema, Table, Column, ForeignKey
+from .schema import DBSchema, Table, Column, ForeignKey, TableSize
 
 
 class PGSchema(DBSchema):
@@ -147,4 +147,45 @@ class PGSchema(DBSchema):
 				clm = dict(clm)
 				clm_inst = Column(name=clm.pop("column_name"), **clm)
 				result[clm_inst.name] = clm_inst
+		return result
+
+	def _get_table_size(self, table_instance):
+		result = None
+		qry = "" \
+			" SELECT " \ 
+			"   TABLE_SCHEMA, " \ 
+			"   TABLE_NAME, " \ 
+			"   PG_SIZE_PRETTY(TOTAL_BYTES) AS TOTAL, " \ 
+			"   PG_SIZE_PRETTY(INDEX_BYTES) AS INDEX, " \ 
+			"   PG_SIZE_PRETTY(TOAST_BYTES) AS TOAST, " \ 
+			"   PG_SIZE_PRETTY(TABLE_BYTES) AS TABLE " \ 
+			" FROM ( " \ 
+			"        SELECT " \ 
+			"          *, " \ 
+			"          TOTAL_BYTES - INDEX_BYTES - COALESCE(TOAST_BYTES, 0) AS TABLE_BYTES " \ 
+			"        FROM ( " \ 
+			"               SELECT " \ 
+			"                 C.OID, " \ 
+			"                 NSPNAME                               AS TABLE_SCHEMA, " \ 
+			"                 RELNAME                               AS TABLE_NAME, " \ 
+			"                 C.RELTUPLES                           AS ROW_ESTIMATE, " \ 
+			"                 PG_TOTAL_RELATION_SIZE(C.OID)         AS TOTAL_BYTES, " \ 
+			"                 PG_INDEXES_SIZE(C.OID)                AS INDEX_BYTES, " \ 
+			"                 PG_TOTAL_RELATION_SIZE(RELTOASTRELID) AS TOAST_BYTES " \ 
+			"               FROM PG_CLASS C " \ 
+			"                 LEFT JOIN PG_NAMESPACE N ON N.OID = C.RELNAMESPACE " \ 
+			"               WHERE RELKIND = 'r' " \ 
+			"             ) A " \ 
+			"      ) A " \ 
+			" WHERE " \ 
+			"   TABLE_SCHEMA = '{}' " \ 
+			"   AND TABLE_NAME = '{}' " \ 
+			" LIMIT 1 ".format(
+				table_instance.db_schema,
+				table_instance.name
+			)
+		with self._meta.conn.cursor() as crs:
+			crs.execute(qry)
+			record = dict(crs.fetchone())
+			result = TableSize(table_size=record.pop("total"), index_size=record.pop("index") **clm)
 		return result

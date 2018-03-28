@@ -14,6 +14,15 @@ def meta_factory():
     return type('_meta', sub, attr)
 
 
+class TableSize(object):
+
+    table_size = None
+    index_size = None
+
+    def __init__(self, table_size, index_size):
+        self.table_size = table_size
+        self.index_size = index_size
+
 class Table(object):
     """DataBase Table representation"""
 
@@ -21,9 +30,9 @@ class Table(object):
         pass
 
     name = None
-    db_schema = None
+    db_schema = None    
 
-    _columns = _fks = _refs = None
+    _columns = _fks = _refs = _table_size = None
 
     def __init__(self, **kwargs):
         if self._meta is not None:
@@ -33,6 +42,9 @@ class Table(object):
             self.name = kwargs.pop("name")
         if "db_schema" in kwargs:
             self.db_schema = kwargs.pop("db_schema")
+
+        if "table_size" in kwargs:
+            self.table_size = kwargs.pop("table_size")
 
         for k in kwargs:
             setattr(self._meta, k, kwargs[k])
@@ -79,6 +91,12 @@ class Table(object):
     def pk(self):
         """Primary Keys of the table"""
         return self._pk
+    
+    @property
+    def table_size(self, dbschema_instance):
+        if self._table_size is None:
+            self._table_size = dbschema_instance._get_table_size(self)
+        return self._table_size
 
 
 class Column(object):
@@ -159,6 +177,13 @@ class DBSchema(object):
         """Abstract method for closing the connection"""
         raise NotImplementedError()
 
+    def get_table_info(self, table_schema, table_name, is_lazy = True):
+        """Abstract method for returning ONE table information"""
+        table = Table(name=table_name, db_schema=table_schema)
+        if not is_lazy:
+            table.set_properties(self)
+
+
     def _get_tables(self):
         """Abstract method for getting all the tables from the defined work schemas"""
         raise NotImplementedError()
@@ -177,4 +202,8 @@ class DBSchema(object):
 
     def _get_pk(self, table_instance):
         """Abstract method for getting all Columns of the Table's PK"""
+        raise NotImplementedError()
+
+    def _get_table_size(self, table_instance):
+        """Abstract method for getting the table disk usage information"""
         raise NotImplementedError()
