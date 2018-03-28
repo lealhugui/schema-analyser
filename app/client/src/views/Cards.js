@@ -25,7 +25,7 @@ export const TableCard = (props) => {
     }
 
     return (
-        <article className="table-card-outer">
+        <article className="table-card-outer shadow">
             <div className="table-card" title={props.table.table_name}>
                 <p className="text-overflow">{props.table.table_name.toUpperCase()}</p>
                 <small style={listWrapperStyles}>{flds}</small>

@@ -5,6 +5,11 @@ div {
   font-family: sans-serif;
 }
 
+.shadow {
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.65);
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);
@@ -17,3 +22,4 @@ div {
 .rotating {
   -webkit-animation: rotating 7s linear infinite;
 }
+

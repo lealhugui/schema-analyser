@@ -1,17 +1,24 @@
 .schema-card {
     overflow: hidden;
     width: 90%;
-    border-radius: 3px;    
-    margin-top: 5px;
-    margin-left: auto;
-    margin-right: auto;
+    border-radius: 3px;
+    margin: 5px auto;
+    -moz-column-count: 4;
+    -webkit-column-count: 4;
+    column-count: 4;
+    -moz-column-gap: 1em;
+    -webkit-column-gap: 1em;
+    column-gap: 1em;
+    
 }
 
 .table-card-outer {
-    float: left;
     width: 20%;   
     padding: 1%;
     overflow: auto;
+    display: inline-block;
+    margin: 0 0 1em;
+    width: 100%;
 } 
 
 .table-card-outer:nth-of-type(odd) {
