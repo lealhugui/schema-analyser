@@ -1,0 +1,15 @@
+@media (min-width: 1800px) { 
+  #toggle-top-menu {
+    display: none;
+  }
+  
+  #top-menu {
+    display: block;
+  }
+
+  .schema-card {
+    -moz-column-count: 6;
+    -webkit-column-count: 6;  
+    column-count: 6;
+  }
+}

@@ -1,36 +1,44 @@
+#schema-title {
+    width: 100%; display: block;
+}
+
 .schema-card {
     overflow: hidden;
     width: 90%;
     border-radius: 3px;
     margin: 5px auto;
-    -moz-column-count: 4;
-    -webkit-column-count: 4;
-    column-count: 4;
     -moz-column-gap: 1em;
     -webkit-column-gap: 1em;
     column-gap: 1em;
-    
+}
+
+.bottom-bar {
+    position: relative;
+    width: 100%;
+    display: block;
+    background: #FFECC1;
 }
 
 .table-card-outer {
-    width: 20%;   
-    padding: 1%;
+    margin: 0 0 1em; padding: 1%;
     overflow: auto;
-    display: inline-block;
-    margin: 0 0 1em;
+    display: block;
     width: 100%;
-} 
 
-.table-card-outer:nth-of-type(odd) {
-    float: right;
-}
+    -webkit-column-break-inside: avoid; /* Chrome, Safari */
+    page-break-inside: avoid;           /* Theoretically FF 20+ */
+    break-inside: avoid-column;         /* IE 11 */
+    display:table; 
+} 
 
 .table-card {
     width: 100%;    
-    padding: 8px 8px 32px 8px;
-    border: 1px solid #FFECC1;
     border-radius: 3px;
     position: relative;
+}
+
+.card-title {
+    background: #FFCE5C;
 }
 
 .table-field {
@@ -42,13 +50,6 @@
     border-top:thin solid black;
     display: block;
     line-height: 1.8em;
-}
-
-.bottom-bar {
-    position: absolute;
-    right:0; bottom: 0;
-    display: block;
-    background: #FFECC1;
 }
 
 .obj-identifier {    

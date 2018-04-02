@@ -1,14 +1,6 @@
 /* generic CSS */
-* { 
-  box-sizing: border-box;
-}
-
-html, body, div, nav {
-  width: 100%;
-}
-
 p {
-  margin: 6px;
+  padding: 6px;
 }
 
 .text-overflow {
@@ -36,15 +28,10 @@ p {
 }
 
 .app-info {
-  
-  
   position: relative;
-  
 }
 
 .app-info.element{
-  
-  
   position: relative;
   
 }
@@ -135,8 +122,8 @@ table.dyn-tbl tr th:last-child {
 /* END Dynamic Table */
 
 
-/* navbar */
-nav.navbar ul {
+/* top-menu */
+nav#top-menu ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -145,11 +132,11 @@ nav.navbar ul {
   width: 100%;
 }
 
-nav.navbar li {
+nav#top-menu li {
     float: left;
 }
 
-nav.navbar li a {
+nav#top-menu li a {
     display: block;
     color: white;
     text-align: center;
@@ -158,7 +145,16 @@ nav.navbar li a {
 }
 
 /* Change the link color to #111 (black) on hover */
-nav.navbar li a:hover {
+nav#top-menu li a:hover {
     background-color: #111;
 }
-/* END navbar */
+
+#toggle-top-menu {
+  position: absolute;
+  top: 0; left: 0;
+  height: 30px; width: auto;
+  margin: 6px;
+}
+
+/* END top-menu */
+

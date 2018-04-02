@@ -1,0 +1,14 @@
+  /* linha para manter padrao */
+  #toggle-top-menu {
+    display: block;
+  }
+
+  #top-menu {
+    display: none;
+  }
+
+  .schema-card {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;  
+    column-count: 1;
+  }

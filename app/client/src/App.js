@@ -7,6 +7,7 @@ import {
   Link
 } from 'react-router-dom';
 import logo from './molecule.svg';
+import menu from './menu.svg';
 import './App.css';
 import SchemaContainer from './views/SchemaContainer';
 import TableInfo from './views/TableInfo';
@@ -56,14 +57,15 @@ const App = () => {
 
         <div className="app">
           <div className="app-header">
+            <img id="toggle-top-menu" src={menu} alt="menu" />
             <div className="app-info">
               <div className="app-info element"><img id="app-logo" src={logo} className="app-logo" alt="logo" /></div>
-              <div className="app-info element"><h2 style={{height:"100%"}}>schema-analyser</h2></div>
+              {/* <div className="app-info element"><h2 style={{height:"100%"}}>schema-analyser</h2></div> */}
             </div>
           </div>
           <div>
             <span>
-              <nav className="navbar">
+              <nav id="top-menu">
                 <ul>
                   <li><Link to='/'>HOME</Link></li>
                   <li><Link to='/pks'>PK LIST</Link></li>

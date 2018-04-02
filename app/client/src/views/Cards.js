@@ -27,7 +27,7 @@ export const TableCard = (props) => {
     return (
         <article className="table-card-outer shadow">
             <div className="table-card" title={props.table.table_name}>
-                <p className="text-overflow">{props.table.table_name.toUpperCase()}</p>
+                <p className="card-title text-overflow">{props.table.table_name.toUpperCase()}</p>
                 <small style={listWrapperStyles}>{flds}</small>
                 <div className="bottom-bar">
                     <a className="obj-identifier" href="{'/table/'+ props.table.table_name}">
@@ -50,7 +50,7 @@ export const SchemaCard = (props) => {
     }
     return (
         <div className="schema-card">
-            <div>
+            <div id="schema-title">
                 <p>Schema Name: <b>{props.schema.schema_name.toUpperCase()}</b></p>
             </div>
             {listTables}
