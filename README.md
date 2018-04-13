@@ -40,3 +40,5 @@ As the client and server are completely decoupled, today you'll have to work on 
   * Assuming that on terminal, you are on the root of the project;
   * `$ cd app\client`
   * `$ npm start`
+
+![alt text](./app/client/public/jetbrains-logo.svg)
