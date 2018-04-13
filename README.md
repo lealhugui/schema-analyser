@@ -41,4 +41,6 @@ As the client and server are completely decoupled, today you'll have to work on 
   * `$ cd app\client`
   * `$ npm start`
 
-![alt text](./app/client/public/jetbrains-logo.svg)
+
+
+![Proudly developed on a JetBrains platform.](./app/client/public/jetbrains-logo.svg)
